@@ -1,11 +1,11 @@
-import { COMPLEMENTS, EntityConfig, GameConfig } from "../types.js";
+import { COMPLEMENTS, EntityConfig, GameConfig, Rect } from "./types.js";
 
 export const update = <T>(config : GameConfig<T>, delta : number) => {
 	config.scenes[config.scene].layers.forEach(layer => {
 		layer.entities.forEach(entity => {
 			entity.events?.update?.({
 				entity,
-				state : config.state,
+				game : config,
 				data : {
 					delta,
 				},
@@ -17,14 +17,14 @@ export const update = <T>(config : GameConfig<T>, delta : number) => {
 				coordinate: "x",
 				delta,
 				entity,
-				state: config.state,
+				config,
 			}); 
 			updateCoordinate({
 				candidates,
 				coordinate: "y",
 				delta,
 				entity,
-				state: config.state,
+				config,
 			});
 		});
 	});
@@ -34,13 +34,13 @@ const updateCoordinate = <T, U>({
 	entity,
 	delta,
 	candidates,
-	state,
+	config,
 	coordinate,
 } : {
     entity : EntityConfig<T, U>;
     delta : number;
     candidates : EntityConfig<T, U>[];
-    state : T;
+    config : GameConfig<T>;
     coordinate : "x" | "y";
 }) => {         
 	entity[coordinate] += (entity.velocity?.[coordinate] ?? 0) * delta;
@@ -55,7 +55,7 @@ const updateCoordinate = <T, U>({
 			if(fun) {
 				fun({
 					entity,
-					state : state,
+					game: config,
 					data : {
 						other : candidate,
 						coordinate,

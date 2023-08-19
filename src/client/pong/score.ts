@@ -1,6 +1,6 @@
 import { text } from "../lib/game.js";
 import { State } from "../state.js";
-import { Output } from "../types.js";
+import { Output } from "../lib/types.js";
 
 const SCORE = {
 	// DRAW
@@ -15,8 +15,8 @@ export const leftScore = text<State>({
 	x : 10,
 	// UPDATE
 	events : {
-		update : ({ entity, state }) => {
-			entity.text = `${state.pong.left}`;
+		update : ({ entity, game }) => {
+			entity.text = `${game.state.pong.left}`;
 		},
 	},
 });
@@ -28,8 +28,8 @@ export const rightScore = (output : Output) => text<State>({
 	align : "right",
 	// UPDATE
 	events : {
-		update : ({ entity, state }) => {
-			entity.text = `${state.pong.right}`;
+		update : ({ entity, game }) => {
+			entity.text = `${game.state.pong.right}`;
 		},
 	},
 });

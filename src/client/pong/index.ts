@@ -1,4 +1,4 @@
-import { Output } from "../types.js";
+import { Output } from "../lib/types.js";
 import { ball } from "./ball.js";
 import { bottomGoal, topGoal } from "./goal.js";
 import { leftPaddle, rightPaddle } from "./paddle.js";

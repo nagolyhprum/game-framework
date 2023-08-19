@@ -1,7 +1,8 @@
-import { BrowserOutput } from "./lib/browser-output.js";
-import { game } from "./lib/game.js";
+import { game, BrowserOutput } from "./lib/game.js";
 import { pong } from "./pong/index.js";
 import { State, state } from "./state.js";
+
+const output = BrowserOutput(document.querySelector("canvas")!);
 
 game<State>(output => {       
 	return {
@@ -13,4 +14,4 @@ game<State>(output => {
 			pong : pong(output),
 		},
 	};
-})(BrowserOutput(document.querySelector("canvas")!));
+})(output);

@@ -1,4 +1,4 @@
-import { GameConfig, Output } from "../types";
+import { GameConfig, Output } from "./types";
 
 export const draw = <T>(config : GameConfig<T>, output : Output, delta : number) => {
 	output.setFill(config.background);

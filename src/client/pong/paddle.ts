@@ -1,6 +1,5 @@
-import { rect } from "../lib/game.js";
+import { rect, KEY, Output, follow } from "../lib/game.js";
 import { VELOCITY } from "../shared.js";
-import { KEY, Output } from "../types.js";
 
 const PADDLE = (output : Output) => ({
 	// DRAW
@@ -25,18 +24,18 @@ export const leftPaddle = (output : Output) => rect({
 	// COLLISION
 	events : {
 		keydown : {
-			[KEY.w] : ({ entity }) => {
+			[KEY.ArrowUp] : ({ entity }) => {
 				entity.velocity.y = -VELOCITY;
 			},
-			[KEY.s] : ({ entity }) => {
+			[KEY.ArrowDown] : ({ entity }) => {
 				entity.velocity.y = VELOCITY;
 			},
 		},
 		keyup : {
-			[KEY.w] : ({ entity }) => {
+			[KEY.ArrowUp] : ({ entity }) => {
 				entity.velocity.y = 0;
 			},
-			[KEY.s] : ({ entity }) => {
+			[KEY.ArrowDown] : ({ entity }) => {
 				entity.velocity.y = 0;
 			},
 		},
@@ -56,24 +55,12 @@ export const rightPaddle = (output : Output) => rect({
 	},
 	// COLLISION
 	events : {
-		keydown : {
-			[KEY.ArrowUp] : ({ entity }) => {
-				entity.velocity.y = -VELOCITY;
-			},
-			[KEY.ArrowDown] : ({ entity }) => {
-				entity.velocity.y = VELOCITY;
-			},
-		},
-		keyup : {
-			[KEY.ArrowUp] : ({ entity }) => {
-				entity.velocity.y = 0;
-			},
-			[KEY.ArrowDown] : ({ entity }) => {
-				entity.velocity.y = 0;
-			},
-		},
 		collision : {
 			wall : stop,
 		},
+		update : follow("ball", {
+			x : 0,
+			y : VELOCITY,
+		}),
 	},
 });

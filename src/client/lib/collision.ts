@@ -1,4 +1,4 @@
-import { CollisionEventConfig } from "../types";
+import { CollisionEventConfig } from "./types";
 
 export const bounce = <T, U>(event : CollisionEventConfig<T, U>) => {
 	event.entity.velocity[event.data.coordinate] *= -1;

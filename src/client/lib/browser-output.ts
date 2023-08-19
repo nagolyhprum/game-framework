@@ -1,4 +1,4 @@
-import { Alignment, Baseline, InputEventConfig, KEY, Output } from "../types.js";
+import { Alignment, Baseline, InputEventConfig, KEY, Output } from "./types.js";
 
 export const BrowserOutput = (canvas : HTMLCanvasElement) : Output => {
 	const context = canvas.getContext("2d")!;

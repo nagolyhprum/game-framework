@@ -1,6 +1,5 @@
-import { bounce, rect } from "../lib/game.js";
+import { bounce, rect, Output } from "../lib/game.js";
 import { VELOCITY } from "../shared.js";
-import { Output } from "../types.js";
 
 export const ball = (output : Output) => rect({
 	// DRAW

@@ -1,4 +1,4 @@
-import { GameConfig, Output } from "../types";
+import { GameConfig, Output } from "./types";
 
 export const handleUserInput = <T>(config : GameConfig<T>, output : Output) => {
 	output.onEvent(event => {
@@ -14,7 +14,7 @@ export const handleUserInput = <T>(config : GameConfig<T>, output : Output) => {
 							if(fun) {
 								fun({
 									entity,
-									state : config.state,
+									game : config,
 									data : null,
 								});
 							}

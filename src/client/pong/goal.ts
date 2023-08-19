@@ -1,6 +1,5 @@
-import { rect } from "../lib/game.js";
+import { rect, Output } from "../lib/game.js";
 import { State } from "../state.js";
-import { Output } from "../types.js";
 
 const GOAL = (output : Output) => ({
 	// DRAW
@@ -18,8 +17,8 @@ export const topGoal = (output : Output) => rect<State>({
 	// COLLISION
 	events : {
 		collision : {
-			ball : ({ state, data : { other : ball } }) => {
-				state.pong.left++;
+			ball : ({ game, data : { other : ball } }) => {
+				game.state.pong.left++;
 				ball.x = output.getWidth() / 2;
 				ball.y = output.getHeight() / 2;
 				ball.velocity.x = -ball.velocity.x;
@@ -38,8 +37,8 @@ export const bottomGoal = (output : Output) => rect<State>({
 	// COLLISION
 	events : {
 		collision : {
-			ball : ({ state, data : { other : ball } }) => {
-				state.pong.right++;
+			ball : ({ game, data : { other : ball } }) => {
+				game.state.pong.right++;
 				ball.x = output.getWidth() / 2;
 				ball.y = output.getHeight() / 2;
 				ball.velocity.x = -ball.velocity.x;

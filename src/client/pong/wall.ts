@@ -1,5 +1,4 @@
-import { rect } from "../lib/game.js";
-import { Output } from "../types.js";
+import { rect, Output } from "../lib/game.js";
 
 const WALL = (output : Output) => ({
 	// DRAW
