@@ -3,15 +3,19 @@ import { State } from "../state.js";
 import { Output } from "../types.js";
 
 const GOAL = (output : Output) => ({
-	name : "goal",
+	// DRAW
 	y : 0,
 	width : 10,
 	height : output.getHeight(),
+	// COLLISION
+	name : "goal",
 });
 
 export const topGoal = (output : Output) => rect<State>({
 	...GOAL(output),
+	// DRAW
 	x : 0,
+	// COLLISION
 	events : {
 		collision : {
 			ball : ({ state, data : { other : ball } }) => {
@@ -26,10 +30,12 @@ export const topGoal = (output : Output) => rect<State>({
 
 export const bottomGoal = (output : Output) => rect<State>({
 	...GOAL(output),
+	// DRAW
 	x : output.getWidth(),
 	anchor : { 
 		x : 1,
 	},
+	// COLLISION
 	events : {
 		collision : {
 			ball : ({ state, data : { other : ball } }) => {

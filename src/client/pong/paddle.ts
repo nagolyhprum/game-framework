@@ -3,7 +3,7 @@ import { VELOCITY } from "../shared.js";
 import { KEY, Output } from "../types.js";
 
 const PADDLE = (output : Output) => ({
-	name : "paddle",        
+	// DRAW
 	y : output.getHeight() / 2,
 	anchor : {
 		y  : .5,
@@ -11,6 +11,8 @@ const PADDLE = (output : Output) => ({
 	width : 10,
 	height : output.getHeight() / 4,
 	fill : "white",
+	// COLLISION
+	name : "paddle",        
 	velocity : {
 		y : 0,
 	},
@@ -18,7 +20,9 @@ const PADDLE = (output : Output) => ({
 
 export const leftPaddle = (output : Output) => rect({
 	...PADDLE(output),
+	// DRAW
 	x : 10,
+	// COLLISION
 	events : {
 		keydown : {
 			[KEY.w] : ({ entity }) => {
@@ -44,14 +48,13 @@ export const leftPaddle = (output : Output) => rect({
 
 export const rightPaddle = (output : Output) => rect({
 	...PADDLE(output),
+	// DRAW
 	x : output.getWidth() - 10,
 	anchor : {
 		x : 1,
 		y  : .5,
 	},
-	velocity : {
-		y : 0,
-	},
+	// COLLISION
 	events : {
 		keydown : {
 			[KEY.ArrowUp] : ({ entity }) => {

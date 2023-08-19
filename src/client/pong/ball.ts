@@ -3,7 +3,7 @@ import { VELOCITY } from "../shared.js";
 import { Output } from "../types.js";
 
 export const ball = (output : Output) => rect({
-	name : "ball",
+	// DRAW
 	x : output.getWidth() / 2,
 	y : output.getHeight() / 2,
 	anchor : {
@@ -13,6 +13,8 @@ export const ball = (output : Output) => rect({
 	width : 10,
 	height : 10,
 	fill : "white",
+	// COLLISION
+	name : "ball",
 	events : {
 		collision : {
 			wall : bounce,

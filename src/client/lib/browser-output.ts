@@ -33,20 +33,6 @@ export const BrowserOutput = (canvas : HTMLCanvasElement) : Output => {
 		setTextBaseline(align : Baseline) {
 			context.textBaseline = align;
 		},
-		onEvent(callback : (config : InputEventConfig) => void) {
-			canvas.addEventListener("keydown", (event : KeyboardEvent) => {
-				callback({
-					name : "keydown",
-					key : event.key as keyof typeof KEY,
-				});
-			});
-			canvas.addEventListener("keyup", (event : KeyboardEvent) => {
-				callback({
-					name : "keyup",
-					key : event.key as keyof typeof KEY,
-				});
-			});
-		},
 		path(builder : (context : CanvasRenderingContext2D) => void) {
 			context.beginPath();
 			builder(context);
@@ -65,6 +51,20 @@ export const BrowserOutput = (canvas : HTMLCanvasElement) : Output => {
 		},
 		strokeRect(x : number, y : number, width : number, height : number) {
 			context.strokeRect(x, y, width, height);
-		},		
+		},	
+		onEvent(callback : (config : InputEventConfig) => void) {
+			canvas.addEventListener("keydown", (event : KeyboardEvent) => {
+				callback({
+					name : "keydown",
+					key : event.key as keyof typeof KEY,
+				});
+			});
+			canvas.addEventListener("keyup", (event : KeyboardEvent) => {
+				callback({
+					name : "keyup",
+					key : event.key as keyof typeof KEY,
+				});
+			});
+		},	
 	};
 };

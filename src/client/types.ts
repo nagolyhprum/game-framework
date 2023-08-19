@@ -116,3 +116,8 @@ export const KEY = {
 	ArrowUp : "ArrowUp",
 	ArrowDown : "ArrowDown",
 } as const;
+
+export const COMPLEMENTS = {
+	x : "width",
+	y : "height",
+} as const;
