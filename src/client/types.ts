@@ -24,6 +24,12 @@ export type Output = {
     setTextAlign(align : Alignment): void;
     setTextBaseline(align : Baseline): void;
     onEvent(callback : (config : InputEventConfig) => void) : void;
+    path(builder : (context : CanvasRenderingContext2D) => void) : void;
+    setStroke(stroke : string): void;
+    stroke(): void;
+    fill(): void;
+    setDash(dash : number[]): void;
+    strokeRect(x : number, y : number, width : number, height : number): void;
 };
 
 export type Alignment = "left" | "center" | "right";

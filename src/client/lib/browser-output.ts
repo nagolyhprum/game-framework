@@ -47,5 +47,24 @@ export const BrowserOutput = (canvas : HTMLCanvasElement) : Output => {
 				});
 			});
 		},
+		path(builder : (context : CanvasRenderingContext2D) => void) {
+			context.beginPath();
+			builder(context);
+		},
+		setStroke(stroke : string) {
+			context.strokeStyle = stroke;
+		},
+		stroke() {
+			context.stroke();
+		},
+		fill() {
+			context.fill();
+		},
+		setDash(dash : number[]) {
+			context.setLineDash(dash);
+		},
+		strokeRect(x : number, y : number, width : number, height : number) {
+			context.strokeRect(x, y, width, height);
+		},		
 	};
 };

@@ -113,10 +113,24 @@ const draw = <T>(config : GameConfig<T>, output : Output, delta : number) => {
 				entity,
 				output,
 			});
+			if(config.debug) {
+				// OUTLINE
+				output.setStroke("red");
+				output.setDash([5, 5]);
+				output.strokeRect(entity.x, entity.y, entity.width, entity.height);
+			}
 			output.restore();
 			if(config.debug) {
+				// FPS
 				output.setFill("red");
 				output.fillRect(entity.x - 1, entity.y - 1, 3, 3);
+				// VELOCITY
+				output.setStroke("red");
+				output.path(context => {
+					context.moveTo(entity.x, entity.y);
+					context.lineTo(entity.x + (entity.velocity?.x ?? 0), entity.y + (entity.velocity?.y ?? 0));
+					context.stroke();
+				});
 			}
 		});
 	});
@@ -175,7 +189,7 @@ const drawRect = <T>({
 	entity,
 	output,
 } : DrawEventConfig<T, TextConfig<T>>) => {
-	output.setFill(entity.fill);
+	output.setFill(entity.fill ?? "transparent");
 	output.fillRect(entity.x, entity.y, entity.width, entity.height);
 };
 

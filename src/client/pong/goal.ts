@@ -5,7 +5,7 @@ import { Output } from "../types.js";
 const GOAL = (output : Output) => ({
 	name : "goal",
 	y : 0,
-	width : 1,
+	width : 10,
 	height : output.getHeight(),
 });
 
