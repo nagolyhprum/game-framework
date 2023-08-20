@@ -1,5 +1,5 @@
-import { rect, KEY, Output, follow } from "../lib/game.js";
-import { VELOCITY } from "../shared.js";
+import { rect, KEY, Output, follow, stop } from "../lib/game";
+import { VELOCITY } from "../shared";
 
 const PADDLE = (output : Output) => ({
 	// DRAW

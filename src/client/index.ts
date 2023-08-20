@@ -1,6 +1,6 @@
-import { game, BrowserOutput } from "./lib/game.js";
-import { pong } from "./pong/index.js";
-import { State, state } from "./state.js";
+import { game, BrowserOutput } from "./lib/game";
+import { pong } from "./pong/index";
+import { State, state } from "./state";
 
 const output = BrowserOutput(document.querySelector("canvas")!);
 

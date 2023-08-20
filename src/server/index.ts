@@ -1,14 +1,20 @@
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
 import express from "express";
 import path from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const index = `<!doctype html>
+<html>
+    <body>
+        <canvas tabindex="1" width="640" height="480"></canvas>
+        <script src="main.js"></script>
+    </body>
+</html>`;
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, "..", "client")));
+
+app.get("/", (_, res) => {
+	res.send(index);
+});
 
 app.listen(80);

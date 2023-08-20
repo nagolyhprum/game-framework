@@ -1,6 +1,6 @@
-import { text } from "../lib/game.js";
-import { State } from "../state.js";
-import { Output } from "../lib/types.js";
+import { text } from "../lib/game";
+import { State } from "../state";
+import { Output } from "../lib/types";
 
 const SCORE = {
 	// DRAW

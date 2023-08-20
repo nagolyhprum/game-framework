@@ -1,4 +1,4 @@
-import { DrawEventConfig, TextConfig, WithoutDraw } from "./types.js";
+import { DrawEventConfig, TextConfig, WithoutDraw } from "./types";
 
 const drawText = <T>({
 	entity,

@@ -1,8 +1,9 @@
 {
-  "compilerOptions": { 
-    "module": "es2022",
-    "target": "es5",
+  "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-  }
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true
+  },
 }

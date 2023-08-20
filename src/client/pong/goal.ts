@@ -1,5 +1,5 @@
-import { rect, Output } from "../lib/game.js";
-import { State } from "../state.js";
+import { rect, Output } from "../lib/game";
+import { State } from "../state";
 
 const GOAL = (output : Output) => ({
 	// DRAW

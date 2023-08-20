@@ -1,14 +1,14 @@
-import { Output, GameConfig, WithoutFind } from "./types.js";
-import { draw } from "./draw.js";
-import { update } from "./update.js";
-import { handleUserInput } from "./user-input.js";
+import { Output, GameConfig, WithoutFind } from "./types";
+import { draw } from "./draw";
+import { update } from "./update";
+import { handleUserInput } from "./user-input";
 
-export * from "./types.js";
-export * from "./text.js";
-export * from "./rect.js";
-export * from "./collision.js";
-export * from "./browser-output.js";
-export * from "./movement.js";
+export * from "./types";
+export * from "./text";
+export * from "./rect";
+export * from "./collision";
+export * from "./browser-output";
+export * from "./movement";
 
 export const game = <T>(generate  : (output : Output) => WithoutFind<GameConfig<T>>) => (output : Output) => {
 	const config : GameConfig<T> = {
