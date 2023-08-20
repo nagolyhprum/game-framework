@@ -1,4 +1,4 @@
-import { UpdateEventConfig } from "./types";
+import { KEY, UpdateEventConfig, EntityConfig } from "./types";
 
 export const follow = (name : string, max : {
     x : number;
@@ -12,4 +12,23 @@ export const follow = (name : string, max : {
 		self.velocity.x = max.x * dx;
 		self.velocity.y = max.y * dy;
 	}
+};
+
+export const vertical = {
+	move : (velocity : number) => ({
+		[KEY.ArrowUp] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+			entity.velocity.y = -velocity;
+		},
+		[KEY.ArrowDown] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+			entity.velocity.y = velocity;
+		},
+	}),
+	stop : {
+		[KEY.ArrowUp] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+			entity.velocity.y = 0;
+		},
+		[KEY.ArrowDown] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+			entity.velocity.y = 0;
+		},
+	},
 };

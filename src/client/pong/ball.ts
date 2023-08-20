@@ -2,7 +2,6 @@ import { bounce, rect, Output } from "../lib/game";
 import { VELOCITY } from "../shared";
 
 export const ball = (output : Output) => rect({
-	// DRAW
 	x : output.getWidth() / 2,
 	y : output.getHeight() / 2,
 	anchor : {
@@ -12,7 +11,6 @@ export const ball = (output : Output) => rect({
 	width : 10,
 	height : 10,
 	fill : "white",
-	// COLLISION
 	name : "ball",
 	events : {
 		collision : {

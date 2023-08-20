@@ -22,7 +22,7 @@ const shared = {
 
 module.exports = [{
 	...shared,
-	entry: path.join(__dirname, "src", "client", "index.ts"),
+	entry: path.join(__dirname, "src", "client", "browser.ts"),
 	output: {
 		path: path.resolve(__dirname, "dist", "client"),
 	},
