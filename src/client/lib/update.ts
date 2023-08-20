@@ -1,4 +1,4 @@
-import { COMPLEMENTS, EntityConfig, GameConfig, Rect } from "./types";
+import { COMPLEMENTS, COORDINATES, EntityConfig, GameConfig, Rect } from "./types";
 
 export const update = <T>(config : GameConfig<T>, delta : number) => {
 	config.scenes[config.scene].layers.forEach(layer => {
@@ -12,20 +12,13 @@ export const update = <T>(config : GameConfig<T>, delta : number) => {
 			});
 			const collisions = new Set(Object.keys(entity.events?.collision ?? {}));
 			const candidates = layer.entities.filter(entity => collisions.has(entity.name));   
-			updateCoordinate({
+			COORDINATES.forEach(coordinate => updateCoordinate({
 				candidates,
-				coordinate: "x",
+				coordinate,
 				delta,
 				entity,
 				config,
-			}); 
-			updateCoordinate({
-				candidates,
-				coordinate: "y",
-				delta,
-				entity,
-				config,
-			});
+			}));
 		});
 	});
 };
@@ -41,7 +34,7 @@ const updateCoordinate = <T, U>({
     delta : number;
     candidates : EntityConfig<T, U>[];
     config : GameConfig<T>;
-    coordinate : "x" | "y";
+    coordinate : Coordinate;
 }) => {         
 	entity[coordinate] += (entity.velocity?.[coordinate] ?? 0) * delta;
 	candidates.forEach(candidate => {

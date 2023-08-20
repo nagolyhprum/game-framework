@@ -65,7 +65,7 @@ export type DrawEventConfig<State, EntityData> = {
 
 export type CollisionEventConfig<State, EntityData> = EventConfig<State, EntityData, {
     other : EntityConfig<State, unknown>;
-    coordinate : "x" | "y";
+    coordinate : Coordinate;
 }>;
 
 export type UpdateEventConfig<State, EntityData> = EventConfig<State, EntityData, {
@@ -125,3 +125,7 @@ export const COMPLEMENTS = {
 	x : "width",
 	y : "height",
 } as const;
+
+export const COORDINATES = ["x", "y"] as const;
+
+export type Coordinate = typeof COORDINATES[number];
