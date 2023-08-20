@@ -11,6 +11,6 @@ const drawRect = <T>({
 export const rect = <T>(config : WithoutEntityFunctions<RectConfig<T>>) : RectConfig<T> => {
 	return {
 		...config,
-		draw : drawRect,
+		draw: drawRect,
 	};
 };

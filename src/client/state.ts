@@ -6,8 +6,8 @@ export type State = {
 };
 
 export const state = {
-	pong : {
-		left : 0,
-		right : 0,
+	pong: {
+		left: 0,
+		right: 0,
 	},
 };

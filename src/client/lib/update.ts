@@ -5,8 +5,8 @@ export const update = <T>(config : GameConfig<T>, delta : number) => {
 		layer.entities.forEach(entity => {
 			entity.events?.update?.({
 				entity,
-				game : config,
-				data : {
+				game: config,
+				data: {
 					delta,
 				},
 			});
@@ -49,8 +49,8 @@ const updateCoordinate = <T, U>({
 				fun({
 					entity,
 					game: config,
-					data : {
-						other : candidate,
+					data: {
+						other: candidate,
 						coordinate,
 					},
 				});
@@ -60,10 +60,10 @@ const updateCoordinate = <T, U>({
 };
 
 const toRect = (entity : EntityConfig<unknown, unknown>) : Rect => ({
-	x : entity.x - (entity.width * (entity.anchor?.x ?? 0)),
-	y : entity.y - (entity.height * (entity.anchor?.y ?? 0)),
-	width : entity.width,
-	height : entity.height,
+	x: entity.x - (entity.width * (entity.anchor?.x ?? 0)),
+	y: entity.y - (entity.height * (entity.anchor?.y ?? 0)),
+	width: entity.width,
+	height: entity.height,
 });
 
 const collides = (a : Rect, b : Rect) => {
@@ -72,10 +72,10 @@ const collides = (a : Rect, b : Rect) => {
 	const top = Math.max(a.y, b.y);
 	const bottom = Math.min(a.y + a.height, b.y + b.height);
 	const rect : Rect = {
-		x : left,
-		y : top,
-		width : right - left,
-		height : bottom - top,
+		x: left,
+		y: top,
+		width: right - left,
+		height: bottom - top,
 	};
 	return rect.width > 0 && rect.height > 0 ? rect : null;
 };

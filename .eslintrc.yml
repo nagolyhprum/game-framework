@@ -37,3 +37,10 @@ rules:
       singleline:
           delimiter: "semi"
           requireLast: true
+  key-spacing:
+    - error
+    - mode: strict
+  "@typescript-eslint/type-annotation-spacing":
+    - error
+    - before: true
+      after: true

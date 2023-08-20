@@ -1,8 +1,7 @@
 import { GameConfig, Output } from "./types";
 
 export const draw = <T>(config : GameConfig<T>, output : Output, delta : number) => {
-	output.setFill(config.background);
-	output.fillRect(0, 0, output.getWidth(), output.getHeight());
+	output.clear(config.background);
 	config.scenes[config.scene].layers.forEach(layer => {
 		layer.entities.forEach(entity => {
 			output.save();

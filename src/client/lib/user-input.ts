@@ -14,8 +14,8 @@ export const handleUserInput = <T>(config : GameConfig<T>, output : Output) => {
 							if(fun) {
 								fun({
 									entity,
-									game : config,
-									data : null,
+									game: config,
+									data: null,
 								});
 							}
 						}

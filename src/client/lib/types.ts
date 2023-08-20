@@ -17,19 +17,20 @@ export type Output = {
     fillRect(x : number, y : number, width : number, height : number) : void;
     getWidth() : number;
     getHeight() : number;
-    save(): void;
-    restore(): void;
-    translate(x : number, y : number): void;
-    fillText(text : string, x : number, y : number): void;
-    setTextAlign(align : Alignment): void;
-    setTextBaseline(align : Baseline): void;
+    save() : void;
+    restore() : void;
+    translate(x : number, y : number) : void;
+    fillText(text : string, x : number, y : number) : void;
+    setTextAlign(align : Alignment) : void;
+    setTextBaseline(align : Baseline) : void;
     onEvent(callback : (config : InputEventConfig) => void) : void;
     path(builder : (context : CanvasRenderingContext2D) => void) : void;
-    setStroke(stroke : string): void;
-    stroke(): void;
-    fill(): void;
-    setDash(dash : number[]): void;
-    strokeRect(x : number, y : number, width : number, height : number): void;
+    setStroke(stroke : string) : void;
+    stroke() : void;
+    fill() : void;
+    setDash(dash : number[]) : void;
+    strokeRect(x : number, y : number, width : number, height : number) : void;
+    clear(color : string) : void;
 };
 
 export type Alignment = "left" | "center" | "right";
@@ -90,7 +91,7 @@ export type EntityConfig<State, EntityData> = {
         x ?: number;
         y ?: number;
     };
-    draw: (event : DrawEventConfig<State, EntityData>) => void;
+    draw : (event : DrawEventConfig<State, EntityData>) => void;
 } & EntityData;
 
 export type Entity<State> = TextConfig<State> | RectConfig<State>;
@@ -117,15 +118,15 @@ export type WithoutEntityFunctions<T> = Omit<T, "draw">;
 export type WithoutGameFunctions<T> = Omit<T, "findNode" | "trigger">;
 
 export const KEY = {
-	w : "w",
-	s : "s",
-	ArrowUp : "ArrowUp",
-	ArrowDown : "ArrowDown",
+	w: "w",
+	s: "s",
+	ArrowUp: "ArrowUp",
+	ArrowDown: "ArrowDown",
 } as const;
 
 export const COMPLEMENTS = {
-	x : "width",
-	y : "height",
+	x: "width",
+	y: "height",
 } as const;
 
 export const COORDINATES = ["x", "y"] as const;

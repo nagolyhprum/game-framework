@@ -31,7 +31,7 @@ export const game = <T>(generate  : (output : Output) => WithoutGameFunctions<Ga
 						return fun({
 							data,
 							entity,
-							game : config,
+							game: config,
 						});
 					}
 				}

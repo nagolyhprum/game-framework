@@ -13,6 +13,6 @@ const drawText = <T>({
 export const text = <T>(config : WithoutEntityFunctions<TextConfig<T>>) : TextConfig<T> => {
 	return {
 		...config,
-		draw : drawText,
+		draw: drawText,
 	};
 };

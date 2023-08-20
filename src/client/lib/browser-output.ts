@@ -15,16 +15,16 @@ export const BrowserOutput = (selector : string, width : number, height : number
 			canvas.addEventListener("keydown", (event : KeyboardEvent) => {
 				if(!isDown[event.key]) {
 					callback({
-						name : "keydown",
-						key : event.key as keyof typeof KEY,
+						name: "keydown",
+						key: event.key as keyof typeof KEY,
 					});
 					isDown[event.key] = true;
 				}
 			});
 			canvas.addEventListener("keyup", (event : KeyboardEvent) => {
 				callback({
-					name : "keyup",
-					key : event.key as keyof typeof KEY,
+					name: "keyup",
+					key: event.key as keyof typeof KEY,
 				});
 				isDown[event.key] = false;
 			});
@@ -78,5 +78,9 @@ export const BrowserOutput = (selector : string, width : number, height : number
 		strokeRect(x : number, y : number, width : number, height : number) {
 			context.strokeRect(x, y, width, height);
 		},	
+		clear(color : string) {
+			context.fillStyle = color;
+			context.fillRect(0, 0, width, height);
+		},
 	};
 };

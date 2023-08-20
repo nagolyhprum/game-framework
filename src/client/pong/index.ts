@@ -6,13 +6,13 @@ import { leftScore, rightScore } from "./score";
 import { bottomWall, topWall } from "./wall";
 
 export const pong = (output : Output) => ({
-	layers : [{
-		entities : [
+	layers: [{
+		entities: [
 			leftScore,
 			rightScore(output),
 		],
 	}, {
-		entities : [
+		entities: [
 			leftGoal(output),
 			rightGoal(output),
 			leftPaddle(output),

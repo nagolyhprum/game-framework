@@ -5,11 +5,11 @@ import { State, state } from "./state";
 export const start = game<State>(output => {       
 	return {
 		state,
-		debug : true,
-		background : "black",
-		scene : "pong",
-		scenes : {
-			pong : pong(output),
+		debug: true,
+		background: "black",
+		scene: "pong",
+		scenes: {
+			pong: pong(output),
 		},
 	};
 });
