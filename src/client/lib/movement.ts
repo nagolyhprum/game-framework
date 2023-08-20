@@ -16,18 +16,18 @@ export const follow = (name : string, max : {
 
 export const vertical = {
 	move : (velocity : number) => ({
-		[KEY.ArrowUp] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+		[KEY.ArrowUp] : ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
 			entity.velocity.y = -velocity;
 		},
-		[KEY.ArrowDown] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+		[KEY.ArrowDown] : ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
 			entity.velocity.y = velocity;
 		},
 	}),
 	stop : {
-		[KEY.ArrowUp] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+		[KEY.ArrowUp] : ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
 			entity.velocity.y = 0;
 		},
-		[KEY.ArrowDown] : ({ entity } : { entity : EntityConfig<unknown, unknown> }) => {
+		[KEY.ArrowDown] : ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
 			entity.velocity.y = 0;
 		},
 	},
