@@ -1,17 +1,6 @@
-import { game, BrowserOutput } from "./lib/game";
-import { pong } from "./pong/index";
-import { State, state } from "./state";
+import game from "./game";
+import { BrowserOutput } from "./lib/game";
 
-const output = BrowserOutput(document.querySelector("canvas")!);
+const output = BrowserOutput();
 
-game<State>(output => {       
-	return {
-		state,
-		debug : true,
-		background : "black",
-		scene : "pong",
-		scenes : {
-			pong : pong(output),
-		},
-	};
-})(output);
+game(output);

@@ -10,7 +10,7 @@ const GOAL = (output : Output) => ({
 	name : "goal",
 });
 
-export const topGoal = (output : Output) => rect<State>({
+export const leftGoal = (output : Output) => rect<State>({
 	...GOAL(output),
 	// DRAW
 	x : 0,
@@ -27,7 +27,7 @@ export const topGoal = (output : Output) => rect<State>({
 	},   
 });
 
-export const bottomGoal = (output : Output) => rect<State>({
+export const rightGoal = (output : Output) => rect<State>({
 	...GOAL(output),
 	// DRAW
 	x : output.getWidth(),

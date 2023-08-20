@@ -1,6 +1,7 @@
 import { Alignment, Baseline, InputEventConfig, KEY, Output } from "./types";
 
-export const BrowserOutput = (canvas : HTMLCanvasElement) : Output => {
+export const BrowserOutput = () : Output => {
+	const canvas = document.querySelector("canvas")!;
 	const context = canvas.getContext("2d")!;
 	return {
 		setFill(fill : string) {
