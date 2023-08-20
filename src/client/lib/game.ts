@@ -24,8 +24,8 @@ export const game = <T>(generate  : (output : Output) => WithoutFind<GameConfig<
 			return null;
 		},
 	};
-	process(config, output, Date.now());
 	handleUserInput(config, output);
+	process(config, output, Date.now());
 };
 
 const process = <T>(config : GameConfig<T>, output : Output, lastUpdate : number) => {
