@@ -7,8 +7,16 @@ export const follow = (name : string, max : {
 	const self = config.entity;
 	const other = config.game.findNode(name);
 	if(other) {
-		const dx = Math.sign(other.x - self.x);
-		const dy = Math.sign(other.y - self.y);
+		const selfCenter = {
+			x : self.x + self.width / 2 - self.width * (self.anchor?.x ?? 0),
+			y : self.y + self.height / 2 - self.height * (self.anchor?.y ?? 0),
+		};
+		const otherCenter = {
+			x : other.x + other.width / 2 - other.width * (other.anchor?.x ?? 0),
+			y : other.y + other.height / 2 - other.height * (other.anchor?.y ?? 0),
+		};
+		const dx = Math.sign(otherCenter.x - selfCenter.x);
+		const dy = Math.sign(otherCenter.y - selfCenter.y);
 		self.velocity.x = max.x * dx;
 		self.velocity.y = max.y * dy;
 	}
