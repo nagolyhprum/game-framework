@@ -1,4 +1,4 @@
-import { DrawEventConfig, TextConfig, WithoutDraw } from "./types";
+import { DrawEventConfig, TextConfig, WithoutEntityFunctions } from "./types";
 
 const drawText = <T>({
 	entity,
@@ -10,7 +10,7 @@ const drawText = <T>({
 	output.fillText(entity.text, entity.x, entity.y);
 };
 
-export const text = <T>(config : WithoutDraw<TextConfig<T>>) : TextConfig<T> => {
+export const text = <T>(config : WithoutEntityFunctions<TextConfig<T>>) : TextConfig<T> => {
 	return {
 		...config,
 		draw : drawText,

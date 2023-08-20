@@ -17,6 +17,13 @@ export const ball = (output : Output) => rect({
 			wall : bounce,
 			paddle : bounce,
 		},
+		custom : {
+			goal : ({ entity }) => {
+				entity.x = output.getWidth() / 2;
+				entity.y = output.getHeight() / 2;
+				entity.velocity.x *= -1;
+			},
+		},
 	},
 	velocity : {
 		x : VELOCITY,

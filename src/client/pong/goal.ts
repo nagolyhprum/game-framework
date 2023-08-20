@@ -13,11 +13,9 @@ export const leftGoal = (output : Output) => rect<State>({
 	x : 0,
 	events : {
 		collision : {
-			ball : ({ game, data : { other : ball } }) => {
+			ball : ({ game }) => {
 				game.state.pong.left++;
-				ball.x = output.getWidth() / 2;
-				ball.y = output.getHeight() / 2;
-				ball.velocity.x = -ball.velocity.x;
+				game.trigger("goal");
 			},
 		},
 	},   
@@ -31,11 +29,9 @@ export const rightGoal = (output : Output) => rect<State>({
 	},
 	events : {
 		collision : {
-			ball : ({ game, data : { other : ball } }) => {
+			ball : ({ game }) => {
 				game.state.pong.right++;
-				ball.x = output.getWidth() / 2;
-				ball.y = output.getHeight() / 2;
-				ball.velocity.x = -ball.velocity.x;
+				game.trigger("goal");
 			},
 		},
 	},                        

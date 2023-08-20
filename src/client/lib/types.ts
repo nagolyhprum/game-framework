@@ -84,6 +84,7 @@ export type EntityConfig<State, EntityData> = {
         keyup ?: Partial<Record<keyof typeof KEY, (event : EventConfig<State, EntityData, null>) => void>>;
         collision ?: Record<string, (event : CollisionEventConfig<State, EntityData>) => void>;
         update ?: (event : UpdateEventConfig<State, EntityData>) => void;
+        custom ?: Record<string, (event : EventConfig<State, EntityData, unknown>) => void>;
     };
     velocity ?: {
         x ?: number;
@@ -109,10 +110,11 @@ export type GameConfig<State> = {
     scene : string;
     scenes : Record<string, SceneConfig<State>>;
     findNode : (name : string) => EntityConfig<State, unknown> | null;
+    trigger : (name : string, data ?: unknown) => void;
 };
 
-export type WithoutDraw<T> = Omit<T, "draw">;
-export type WithoutFind<T> = Omit<T, "findNode">;
+export type WithoutEntityFunctions<T> = Omit<T, "draw">;
+export type WithoutGameFunctions<T> = Omit<T, "findNode" | "trigger">;
 
 export const KEY = {
 	w : "w",

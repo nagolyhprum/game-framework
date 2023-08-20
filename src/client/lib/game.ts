@@ -1,4 +1,4 @@
-import { Output, GameConfig, WithoutFind } from "./types";
+import { Output, GameConfig, WithoutGameFunctions } from "./types";
 import { draw } from "./draw";
 import { update } from "./update";
 import { handleUserInput } from "./user-input";
@@ -10,7 +10,7 @@ export * from "./collision";
 export * from "./browser-output";
 export * from "./movement";
 
-export const game = <T>(generate  : (output : Output) => WithoutFind<GameConfig<T>>) => (output : Output) => {
+export const game = <T>(generate  : (output : Output) => WithoutGameFunctions<GameConfig<T>>) => (output : Output) => {
 	const config : GameConfig<T> = {
 		...generate(output),
 		findNode: (name) => {
@@ -22,6 +22,20 @@ export const game = <T>(generate  : (output : Output) => WithoutFind<GameConfig<
 				}
 			}
 			return null;
+		},
+		trigger: (name, data) => {
+			for(const layer of config.scenes[config.scene].layers)  {
+				for(const entity of layer.entities) {
+					const fun = entity.events?.custom?.[name];
+					if(fun) {
+						return fun({
+							data,
+							entity,
+							game : config,
+						});
+					}
+				}
+			}
 		},
 	};
 	handleUserInput(config, output);
