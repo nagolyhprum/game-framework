@@ -1,4 +1,4 @@
-import { COMPLEMENTS, COORDINATES, EntityConfig, GameConfig, Rect } from "./types";
+import { COMPLEMENTS, COORDINATES, Coordinate, EntityConfig, GameConfig, Rect } from "./types";
 
 export const update = <T>(config : GameConfig<T>, delta : number) => {
 	config.scenes[config.scene].layers.forEach(layer => {
