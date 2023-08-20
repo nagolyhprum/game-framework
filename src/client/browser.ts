@@ -1,5 +1,5 @@
-import game from "./game";
+import { start } from "./start";
 
 import { BrowserOutput } from "./lib/browser-output";
 
-game(BrowserOutput());
+start(BrowserOutput("canvas", 640, 480));

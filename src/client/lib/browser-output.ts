@@ -1,8 +1,14 @@
 import { Alignment, Baseline, InputEventConfig, KEY, Output } from "./types";
 
-export const BrowserOutput = () : Output => {
-	const canvas = document.querySelector("canvas")!;
+export const BrowserOutput = (selector : string, width : number, height : number) : Output => {
+	const canvas = document.querySelector<HTMLCanvasElement>(selector)!;
+	canvas.width = width * devicePixelRatio;
+	canvas.height = height * devicePixelRatio;
+	canvas.style.width = `${width}px`;
+	canvas.style.height = `${height}px`;
+	canvas.tabIndex = 0;
 	const context = canvas.getContext("2d")!;
+	context.scale(devicePixelRatio, devicePixelRatio);
 	return {
 		onEvent(callback : (config : InputEventConfig) => void) {
 			const isDown : Record<string, boolean> = {};
@@ -30,10 +36,10 @@ export const BrowserOutput = () : Output => {
 			context.fillRect(x, y, width, height);
 		},
 		getWidth() {
-			return canvas.width;
+			return width;
 		},
 		getHeight() {
-			return canvas.height;
+			return height;
 		},
 		save() {
 			context.save();

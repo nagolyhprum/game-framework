@@ -4,7 +4,7 @@ import path from "path";
 const index = `<!doctype html>
 <html>
     <body>
-        <canvas tabindex="1" width="640" height="480"></canvas>
+        <canvas></canvas>
         <script src="main.js"></script>
     </body>
 </html>`;
