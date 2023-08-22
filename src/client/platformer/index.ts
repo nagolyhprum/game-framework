@@ -1,4 +1,4 @@
-import { Output, all, checkGround, checkWall, collides, data, horizontal, jump, rect, reset, stop, velocity } from "../lib/game";
+import { Output, all, checkGround, checkWall, collides, horizontal, jump, rect, reset, slide, stop } from "../lib/game";
 
 export const platformer = (output : Output) => ({
 	layers: [{
@@ -19,11 +19,7 @@ export const platformer = (output : Output) => ({
 					update: all(
 						horizontal(100),
 						jump(250),
-						({ entity }) => {
-							if(data(entity).isOnWall) {
-								velocity(entity).y = 10;
-							}
-						},
+						slide(10),
 						reset,
 					),
 					collision: {

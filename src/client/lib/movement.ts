@@ -43,10 +43,15 @@ export const horizontal = (speed : number) => (event : UpdateEventConfig<unknown
 	}
 };
 
+export const slide = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
+	if(data(event.entity).isOnWall && (velocity(event.entity).y ?? 0) > 0) {
+		velocity(event.entity).y = speed;
+	}
+};
+
 export const jump = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
 	if(data(event.entity).isOnGround && event.game.keys?.[KEY.Space]) {
 		velocity(event.entity).y = -speed;
-		console.log("jumping");
 	}
 	if((velocity(event.entity).y ?? 0) < 0 && !event.game.keys?.[KEY.Space]) {
 		velocity(event.entity).y = 0;
