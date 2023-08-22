@@ -10,14 +10,11 @@ export const handleUserInput = <T>(config : GameConfig<T>, output : Output) => {
 					if(name === "keydown" || name === "keyup") {
 						const keyEvent = entityEvents[name];
 						if(keyEvent) {
-							const fun = keyEvent[event.key];
-							if(fun) {
-								fun({
-									entity,
-									game: config,
-									data: null,
-								});
-							}
+							keyEvent[event.key]?.({
+								entity,
+								game: config,
+								data: null,
+							});
 						}
 					}
 				}

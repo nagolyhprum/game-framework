@@ -5,7 +5,7 @@ export const draw = <T>(config : GameConfig<T>, output : Output, delta : number)
 	config.scenes[config.scene].layers.forEach(layer => {
 		layer.entities.forEach(entity => {
 			output.save();
-			output.translate(-entity.width * (entity.anchor?.x ?? 0), -entity.height * (entity.anchor?.y ?? 0));
+			output.translate(-(entity.width ?? 0) * (entity.anchor?.x ?? 0), -(entity.height ?? 0) * (entity.anchor?.y ?? 0));
 			entity.draw({
 				entity,
 				output,
@@ -14,7 +14,7 @@ export const draw = <T>(config : GameConfig<T>, output : Output, delta : number)
 				// OUTLINE
 				output.setStroke("green");
 				output.setDash([5, 5]);
-				output.strokeRect(entity.x, entity.y, entity.width, entity.height);
+				output.strokeRect(entity.x, entity.y, (entity.width ?? 0), (entity.height ?? 0));
 			}
 			output.restore();
 			if(config.debug) {

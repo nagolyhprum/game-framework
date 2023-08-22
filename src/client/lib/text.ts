@@ -4,10 +4,10 @@ const drawText = <T>({
 	entity,
 	output,
 } : DrawEventConfig<T, TextConfig<T>>) => {
-	output.setFill(entity.fill);
+	output.setFill(entity.fill ?? "transparent");
 	output.setTextAlign(entity.align ?? "left");
 	output.setTextBaseline(entity.baseline ?? "top");
-	output.fillText(entity.text, entity.x, entity.y);
+	output.fillText(entity.text ?? "", entity.x, entity.y);
 };
 
 export const text = <T>(config : WithoutEntityFunctions<TextConfig<T>>) : TextConfig<T> => {

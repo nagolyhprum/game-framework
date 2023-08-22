@@ -1,3 +1,4 @@
+import { velocity } from "./helper";
 import { COMPLEMENTS, COORDINATES, Coordinate, EntityConfig, GameConfig, Rect } from "./types";
 
 export const update = <T>(config : GameConfig<T>, delta : number) => {
@@ -11,7 +12,7 @@ export const update = <T>(config : GameConfig<T>, delta : number) => {
 				},
 			});
 			const collisions = new Set(Object.keys(entity.events?.collision ?? {}));
-			const candidates = layer.entities.filter(entity => collisions.has(entity.name));   
+			const candidates = layer.entities.filter(entity => collisions.has(entity.name ?? ""));   
 			COORDINATES.forEach(coordinate => updateCoordinate({
 				candidates,
 				coordinate,
@@ -36,6 +37,8 @@ const updateCoordinate = <T, U>({
     config : GameConfig<T>;
     coordinate : Coordinate;
 }) => {         
+	const force = (config.gravity?.[coordinate] ?? 0) * (entity.weight ?? 0) * delta * delta;
+	velocity(entity)[coordinate] = (velocity(entity)[coordinate] ?? 0) + force;
 	entity[coordinate] += (entity.velocity?.[coordinate] ?? 0) * delta;
 	candidates.forEach(candidate => {
 		const a = toRect(entity);
@@ -43,27 +46,27 @@ const updateCoordinate = <T, U>({
 		const collision = collides(a, b);
 		if(collision) {
 			const sign = Math.sign(entity.velocity?.[coordinate] ?? 0);
-			entity[coordinate] -= collision[COMPLEMENTS[coordinate]] * sign;
-			const fun = entity.events.collision[candidate.name];
-			if(fun) {
-				fun({
-					entity,
-					game: config,
-					data: {
-						other: candidate,
-						coordinate,
-					},
-				});
-			}
+			const toAlign = (sign > 0 ? (a[COMPLEMENTS[coordinate]] ?? 0) : 0) + a[coordinate];
+			const alignTo = (sign < 0 ? (b[COMPLEMENTS[coordinate]] ?? 0) : 0) + b[coordinate];
+			entity[coordinate] -= toAlign - alignTo;
+			entity.events?.collision?.[candidate?.name ?? ""]?.({
+				entity,
+				game: config,
+				data: {
+					other: candidate,
+					coordinate,
+					collision,
+				},
+			});
 		}
 	});
 };
 
 const toRect = (entity : EntityConfig<unknown, unknown>) : Rect => ({
-	x: entity.x - (entity.width * (entity.anchor?.x ?? 0)),
-	y: entity.y - (entity.height * (entity.anchor?.y ?? 0)),
-	width: entity.width,
-	height: entity.height,
+	x: entity.x - ((entity.width ?? 0) * (entity.anchor?.x ?? 0)),
+	y: entity.y - ((entity.height ?? 0) * (entity.anchor?.y ?? 0)),
+	width: entity.width ?? 0,
+	height: entity.height ?? 0,
 });
 
 const collides = (a : Rect, b : Rect) => {

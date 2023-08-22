@@ -5,7 +5,7 @@ const drawRect = <T>({
 	output,
 } : DrawEventConfig<T, TextConfig<T>>) => {
 	output.setFill(entity.fill ?? "transparent");
-	output.fillRect(entity.x, entity.y, entity.width, entity.height);
+	output.fillRect(entity.x, entity.y, entity.width ?? 0, entity.height ?? 0);
 };
 
 export const rect = <T>(config : WithoutEntityFunctions<RectConfig<T>>) : RectConfig<T> => {

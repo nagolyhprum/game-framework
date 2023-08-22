@@ -1,4 +1,5 @@
 import { bounce, rect, Output } from "../lib/game";
+import { velocity } from "../lib/helper";
 import { VELOCITY } from "../shared";
 
 export const ball = (output : Output) => rect({
@@ -21,7 +22,7 @@ export const ball = (output : Output) => rect({
 			goal: ({ entity }) => {
 				entity.x = output.getWidth() / 2;
 				entity.y = output.getHeight() / 2;
-				entity.velocity.x *= -1;
+				velocity(entity).x = -(velocity(entity).x ?? 0);
 			},
 		},
 	},

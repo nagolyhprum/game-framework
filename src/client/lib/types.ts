@@ -67,6 +67,7 @@ export type DrawEventConfig<State, EntityData> = {
 export type CollisionEventConfig<State, EntityData> = EventConfig<State, EntityData, {
     other : EntityConfig<State, unknown>;
     coordinate : Coordinate;
+    collision : Rect;
 }>;
 
 export type UpdateEventConfig<State, EntityData> = EventConfig<State, EntityData, {
@@ -80,12 +81,13 @@ export type EntityConfig<State, EntityData> = {
     height ?: number;
     anchor ?: Anchor;
     name ?: string;
+    weight ?: number;
     events ?: {
         keydown ?: Partial<Record<keyof typeof KEY, (event : EventConfig<State, EntityData, null>) => void>>;
         keyup ?: Partial<Record<keyof typeof KEY, (event : EventConfig<State, EntityData, null>) => void>>;
-        collision ?: Record<string, (event : CollisionEventConfig<State, EntityData>) => void>;
+        collision ?: Record<string, null | ((event : CollisionEventConfig<State, EntityData>) => void)>;
         update ?: (event : UpdateEventConfig<State, EntityData>) => void;
-        custom ?: Record<string, (event : EventConfig<State, EntityData, unknown>) => void>;
+        custom ?: Record<string, null | ((event : EventConfig<State, EntityData, unknown>) => void)>;
     };
     velocity ?: {
         x ?: number;
@@ -106,6 +108,10 @@ export type SceneConfig<State> = {
 
 export type GameConfig<State> = {
     debug ?: boolean;
+    gravity ?: {
+        x ?: number;
+        y ?: number;
+    };
     state : State;
     background : string;
     scene : string;
@@ -121,7 +127,10 @@ export const KEY = {
 	w: "w",
 	s: "s",
 	ArrowUp: "ArrowUp",
+	ArrowRight: "ArrowRight",
 	ArrowDown: "ArrowDown",
+	ArrowLeft: "ArrowLeft",
+	Space: " ",
 } as const;
 
 export const COMPLEMENTS = {

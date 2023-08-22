@@ -26,14 +26,11 @@ export const game = <T>(generate  : (output : Output) => WithoutGameFunctions<Ga
 		trigger: (name, data) => {
 			for(const layer of config.scenes[config.scene].layers)  {
 				for(const entity of layer.entities) {
-					const fun = entity.events?.custom?.[name];
-					if(fun) {
-						return fun({
-							data,
-							entity,
-							game: config,
-						});
-					}
+					entity.events?.custom?.[name]?.({
+						data,
+						entity,
+						game: config,
+					});
 				}
 			}
 		},

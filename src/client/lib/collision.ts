@@ -1,9 +1,10 @@
+import { velocity } from "./helper";
 import { CollisionEventConfig } from "./types";
 
 export const bounce = <T, U>(event : CollisionEventConfig<T, U>) => {
-	event.entity.velocity[event.data.coordinate] *= -1;
+	velocity(event.entity)[event.data.coordinate] = -(velocity(event.entity)[event.data.coordinate] ?? 0);
 };
 
 export const stop = <T, U>(event : CollisionEventConfig<T, U>) => {
-	event.entity.velocity[event.data.coordinate] = 0;
+	velocity(event.entity)[event.data.coordinate] = 0;
 };
