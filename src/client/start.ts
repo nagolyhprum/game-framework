@@ -10,7 +10,7 @@ export const start = game<State>(output => {
 		background: "black",
 		scene: "platformer",
 		gravity: {
-			y: 10000 * 3,
+			y: 1,
 		},
 		scenes: {
 			pong: pong(output),

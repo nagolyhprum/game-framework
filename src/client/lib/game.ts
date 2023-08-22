@@ -9,6 +9,7 @@ export * from "./rect";
 export * from "./collision";
 export * from "./browser-output";
 export * from "./movement";
+export * from "./helper";
 
 export const game = <T>(generate  : (output : Output) => WithoutGameFunctions<GameConfig<T>>) => (output : Output) => {
 	const config : GameConfig<T> = {

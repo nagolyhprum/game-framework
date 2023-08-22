@@ -19,8 +19,7 @@ export const leftPaddle = (output : Output) => rect({
 	...PADDLE(output),
 	x: 10,
 	events: {
-		keydown: vertical.move(VELOCITY),
-		keyup: vertical.stop,
+		update: vertical(VELOCITY),
 		collision: {
 			wall: stop,
 		},

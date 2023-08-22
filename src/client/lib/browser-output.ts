@@ -1,4 +1,4 @@
-import { Alignment, Baseline, InputEventConfig, KEY, Output } from "./types";
+import { Alignment, Baseline, InputEventConfig, KeyValues, Output } from "./types";
 
 export const BrowserOutput = (selector : string, width : number, height : number) : Output => {
 	const canvas = document.querySelector<HTMLCanvasElement>(selector)!;
@@ -16,7 +16,7 @@ export const BrowserOutput = (selector : string, width : number, height : number
 				if(!isDown[event.key]) {
 					callback({
 						name: "keydown",
-						key: event.key as keyof typeof KEY,
+						key: event.key as KeyValues,
 					});
 					isDown[event.key] = true;
 				}
@@ -24,7 +24,7 @@ export const BrowserOutput = (selector : string, width : number, height : number
 			canvas.addEventListener("keyup", (event : KeyboardEvent) => {
 				callback({
 					name: "keyup",
-					key: event.key as keyof typeof KEY,
+					key: event.key as KeyValues,
 				});
 				isDown[event.key] = false;
 			});

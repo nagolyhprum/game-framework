@@ -1,5 +1,5 @@
-import { velocity } from "./helper";
-import { COMPLEMENTS, COORDINATES, Coordinate, EntityConfig, GameConfig, Rect } from "./types";
+import { toRect, velocity } from "./helper";
+import { COORDINATES, Coordinate, EntityConfig, GameConfig, Rect } from "./types";
 
 export const update = <T>(config : GameConfig<T>, delta : number) => {
 	config.scenes[config.scene].layers.forEach(layer => {
@@ -45,29 +45,22 @@ const updateCoordinate = <T, U>({
 		const b = toRect(candidate);
 		const collision = collides(a, b);
 		if(collision) {
-			const sign = Math.sign(entity.velocity?.[coordinate] ?? 0);
-			const toAlign = (sign > 0 ? (a[COMPLEMENTS[coordinate]] ?? 0) : 0) + a[coordinate];
-			const alignTo = (sign < 0 ? (b[COMPLEMENTS[coordinate]] ?? 0) : 0) + b[coordinate];
-			entity[coordinate] -= toAlign - alignTo;
 			entity.events?.collision?.[candidate?.name ?? ""]?.({
 				entity,
 				game: config,
 				data: {
 					other: candidate,
 					coordinate,
-					collision,
+					collision: {
+						self: a,
+						other: b,
+						overlap: collision,
+					},
 				},
 			});
 		}
 	});
 };
-
-const toRect = (entity : EntityConfig<unknown, unknown>) : Rect => ({
-	x: entity.x - ((entity.width ?? 0) * (entity.anchor?.x ?? 0)),
-	y: entity.y - ((entity.height ?? 0) * (entity.anchor?.y ?? 0)),
-	width: entity.width ?? 0,
-	height: entity.height ?? 0,
-});
 
 const collides = (a : Rect, b : Rect) => {
 	const left = Math.max(a.x, b.x);

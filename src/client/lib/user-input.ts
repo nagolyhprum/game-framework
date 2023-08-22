@@ -7,6 +7,8 @@ export const handleUserInput = <T>(config : GameConfig<T>, output : Output) => {
 				const entityEvents = entity.events;
 				if(entityEvents) {
 					const name = event.name;
+					const keys = config.keys = config.keys ?? {};
+					keys[event.key] = name === "keydown";
 					if(name === "keydown" || name === "keyup") {
 						const keyEvent = entityEvents[name];
 						if(keyEvent) {

@@ -1,6 +1,5 @@
-import { text } from "../lib/game";
+import { text, Output } from "../lib/game";
 import { State } from "../state";
-import { Output } from "../lib/types";
 
 const SCORE = {
 	name: "score",

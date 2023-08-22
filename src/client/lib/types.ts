@@ -7,7 +7,7 @@ export type Rect = {
 
 export type KeyEventConfig = {
     name : "keydown" | "keyup";
-    key : keyof typeof KEY;
+    key : KeyValues;
 };
 
 export type InputEventConfig = KeyEventConfig;
@@ -67,7 +67,11 @@ export type DrawEventConfig<State, EntityData> = {
 export type CollisionEventConfig<State, EntityData> = EventConfig<State, EntityData, {
     other : EntityConfig<State, unknown>;
     coordinate : Coordinate;
-    collision : Rect;
+    collision : {
+        self : Rect;
+        other : Rect;
+        overlap : Rect;
+    };
 }>;
 
 export type UpdateEventConfig<State, EntityData> = EventConfig<State, EntityData, {
@@ -79,12 +83,13 @@ export type EntityConfig<State, EntityData> = {
     y : number;
     width ?: number;
     height ?: number;
-    anchor ?: Anchor;
+    anchor ?: Anchor;    
     name ?: string;
     weight ?: number;
+    data ?: Record<string, unknown>;
     events ?: {
-        keydown ?: Partial<Record<keyof typeof KEY, (event : EventConfig<State, EntityData, null>) => void>>;
-        keyup ?: Partial<Record<keyof typeof KEY, (event : EventConfig<State, EntityData, null>) => void>>;
+        keydown ?: Partial<Record<KeyValues, (event : EventConfig<State, EntityData, null>) => void>>;
+        keyup ?: Partial<Record<KeyValues, (event : EventConfig<State, EntityData, null>) => void>>;
         collision ?: Record<string, null | ((event : CollisionEventConfig<State, EntityData>) => void)>;
         update ?: (event : UpdateEventConfig<State, EntityData>) => void;
         custom ?: Record<string, null | ((event : EventConfig<State, EntityData, unknown>) => void)>;
@@ -108,6 +113,7 @@ export type SceneConfig<State> = {
 
 export type GameConfig<State> = {
     debug ?: boolean;
+    keys ?: Partial<Record<KeyValues, boolean>>;
     gravity ?: {
         x ?: number;
         y ?: number;
@@ -124,14 +130,18 @@ export type WithoutEntityFunctions<T> = Omit<T, "draw">;
 export type WithoutGameFunctions<T> = Omit<T, "findNode" | "trigger">;
 
 export const KEY = {
-	w: "w",
-	s: "s",
+	W: "w",
+	S: "s",
 	ArrowUp: "ArrowUp",
 	ArrowRight: "ArrowRight",
 	ArrowDown: "ArrowDown",
 	ArrowLeft: "ArrowLeft",
 	Space: " ",
 } as const;
+
+export type KeyKeys = keyof typeof KEY;
+
+export type KeyValues = typeof KEY[KeyKeys];
 
 export const COMPLEMENTS = {
 	x: "width",

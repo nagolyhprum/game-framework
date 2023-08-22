@@ -1,4 +1,4 @@
-import { Output } from "../lib/types";
+import { Output } from "../lib/game";
 import { ball } from "./ball";
 import { leftGoal, rightGoal } from "./goal";
 import { leftPaddle, rightPaddle } from "./paddle";

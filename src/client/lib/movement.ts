@@ -1,5 +1,5 @@
-import { velocity } from "./helper";
-import { KEY, UpdateEventConfig, EntityConfig } from "./types";
+import { data, velocity } from "./helper";
+import { KEY, UpdateEventConfig } from "./types";
 
 export const follow = (name : string, max : {
     x : number;
@@ -23,46 +23,32 @@ export const follow = (name : string, max : {
 	}
 };
 
-export const vertical = {
-	move: (speed : number) => ({
-		[KEY.ArrowUp]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).y = -speed;
-		},
-		[KEY.ArrowDown]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).y = speed;
-		},
-	}),
-	stop: {
-		[KEY.ArrowUp]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).y = 0;
-		},
-		[KEY.ArrowDown]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).y = 0;
-		},
-	},
+export const vertical = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
+	velocity(event.entity).y = 0;
+	if(event.game.keys?.[KEY.ArrowUp]) {
+		velocity(event.entity).y = -speed;
+	}
+	if(event.game.keys?.[KEY.ArrowDown]) {
+		velocity(event.entity).y = (velocity(event.entity).y ?? 0) + speed;
+	}
 };
 
-export const horizontal = {
-	move: (speed : number) => ({
-		[KEY.ArrowLeft]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).x = -speed;
-		},
-		[KEY.ArrowRight]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).x = speed;
-		},
-	}),
-	stop: {
-		[KEY.ArrowLeft]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).x = 0;
-		},
-		[KEY.ArrowRight]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-			velocity(entity).x = 0;
-		},
-	},
+export const horizontal = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
+	velocity(event.entity).x = 0;
+	if(event.game.keys?.[KEY.ArrowLeft]) {
+		velocity(event.entity).x = -speed;
+	}
+	if(event.game.keys?.[KEY.ArrowRight]) {
+		velocity(event.entity).x = (velocity(event.entity).x ?? 0) + speed;
+	}
 };
 
-export const jump = (speed : number) => ({
-	[KEY.Space]: ({ entity } : { entity : EntityConfig<unknown, unknown>; }) => {
-		velocity(entity).y = -speed;
-	},
-});
+export const jump = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
+	if(data(event.entity).isOnGround && event.game.keys?.[KEY.Space]) {
+		velocity(event.entity).y = -speed;
+		console.log("jumping");
+	}
+	if((velocity(event.entity).y ?? 0) < 0 && !event.game.keys?.[KEY.Space]) {
+		velocity(event.entity).y = 0;
+	}
+};
