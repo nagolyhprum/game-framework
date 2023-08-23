@@ -43,8 +43,8 @@ const animate = animation({
 export const ninja = (output : Output) => image({
 	x: output.getWidth() / 2,
 	y: output.getHeight() / 2,
-	width: 128,
-	height: 128,
+	width: 512,
+	height: 512,
 	anchor: {
 		x: 0.5,
 		y: 0.5,
