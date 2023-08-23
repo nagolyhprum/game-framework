@@ -9,6 +9,7 @@ export const BrowserOutput = (selector : string, width : number, height : number
 	canvas.tabIndex = 0;
 	const context = canvas.getContext("2d")!;
 	context.scale(devicePixelRatio, devicePixelRatio);
+	const images : Record<string, HTMLImageElement> = {};
 	return {
 		onEvent(callback : (config : InputEventConfig) => void) {
 			const isDown : Record<string, boolean> = {};
@@ -81,6 +82,42 @@ export const BrowserOutput = (selector : string, width : number, height : number
 		clear(color : string) {
 			context.fillStyle = color;
 			context.fillRect(0, 0, width, height);
+		},
+		drawImage(
+			name : string, 
+			sx : number,
+			sy : number,
+			sw : number,
+			sh : number,
+			dx : number, 
+			dy : number, 
+			dw : number, 
+			dh : number,
+		) {
+			context.drawImage(
+				images[name], 
+				sx, 
+				sy, 
+				sw, 
+				sh,
+				dx, 
+				dy, 
+				dw, 
+				dh, 
+			);
+		},
+		loadImage(name : string, url : string) {
+			const image = new Image();
+			image.src = url;
+			return new Promise<void>(resolve => {
+				image.addEventListener("load", () => {
+					images[name] = image;
+					resolve();
+				});
+			});
+		},
+		scale(x : number, y : number) {
+			context.scale(x, y);
 		},
 	};
 };

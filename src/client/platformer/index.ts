@@ -1,4 +1,4 @@
-import { Output, all, checkGround, checkWall, collides, horizontal, jump, rect, reset, slide, stop } from "../lib/game";
+import { Output, all, checkGround, checkWall, collides, horizontal, jump, rect, reset, slide, stop } from "../lib/index";
 
 export const platformer = (output : Output) => ({
 	layers: [{

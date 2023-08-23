@@ -1,4 +1,4 @@
-import { rect, Output } from "../lib/game";
+import { rect, Output } from "../lib/index";
 import { State } from "../state";
 
 const GOAL = (output : Output) => ({

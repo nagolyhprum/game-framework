@@ -1,4 +1,4 @@
-import { text, Output } from "../lib/game";
+import { text, Output } from "../lib/index";
 import { State } from "../state";
 
 const SCORE = {

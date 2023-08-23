@@ -1,5 +1,10 @@
-import { bounce, rect, Output, velocity } from "../lib/game";
+import { bounce, rect, Output, velocity, all, collides } from "../lib/index";
 import { VELOCITY } from "../shared";
+
+const collision = all(
+	collides,
+	bounce,
+);
 
 export const ball = (output : Output) => rect({
 	x: output.getWidth() / 2,
@@ -14,8 +19,8 @@ export const ball = (output : Output) => rect({
 	name: "ball",
 	events: {
 		collision: {
-			wall: bounce,
-			paddle: bounce,
+			wall: collision,
+			paddle: collision,
 		},
 		custom: {
 			goal: ({ entity }) => {

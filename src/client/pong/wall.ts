@@ -1,4 +1,4 @@
-import { rect, Output } from "../lib/game";
+import { rect, Output } from "../lib/index";
 
 const WALL = (output : Output) => ({
 	x: 0,

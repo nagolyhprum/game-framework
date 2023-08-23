@@ -1,5 +1,5 @@
 import { toRect, velocity } from "./helper";
-import { COORDINATES, Coordinate, EntityConfig, GameConfig, Rect } from "./types";
+import { COORDINATES, Coordinate, Entity, GameConfig, Rect } from "./types";
 
 export const update = <T>(config : GameConfig<T>, delta : number) => {
 	config.scenes[config.scene].layers.forEach(layer => {
@@ -24,18 +24,18 @@ export const update = <T>(config : GameConfig<T>, delta : number) => {
 	});
 };
 
-const updateCoordinate = <T, U>({
+const updateCoordinate = <T>({
 	entity,
 	delta,
 	candidates,
 	config,
 	coordinate,
 } : {
-    entity : EntityConfig<T, U>;
-    delta : number;
-    candidates : EntityConfig<T, U>[];
-    config : GameConfig<T>;
+    candidates : Entity<T>[];
     coordinate : Coordinate;
+    delta : number;
+    entity : Entity<T>;
+    config : GameConfig<T>;
 }) => {         
 	const force = (config.gravity?.[coordinate] ?? 0) * (entity.weight ?? 0) * delta * delta;
 	velocity(entity)[coordinate] = (velocity(entity)[coordinate] ?? 0) + force;

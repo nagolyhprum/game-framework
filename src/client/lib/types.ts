@@ -18,6 +18,7 @@ export type Output = {
     getWidth() : number;
     getHeight() : number;
     save() : void;
+    scale(x : number, y : number) : void;
     restore() : void;
     translate(x : number, y : number) : void;
     fillText(text : string, x : number, y : number) : void;
@@ -31,11 +32,41 @@ export type Output = {
     setDash(dash : number[]) : void;
     strokeRect(x : number, y : number, width : number, height : number) : void;
     clear(color : string) : void;
+    drawImage(
+        name : string, 
+        sx : number,
+        sy : number,
+        sw : number,
+        sh : number,
+        dx : number, 
+        dy : number, 
+        dw : number, 
+        dh : number,
+    ) : void;
+    loadImage(name : string, url : string) : Promise<void>;
 };
 
 export type Alignment = "left" | "center" | "right";
 
 export type Baseline = "top" | "middle" | "bottom";
+
+export type ImageConfig<State> = EntityConfig<State, {
+    src ?: {
+        name : string;
+        x ?: number;
+        y ?: number;
+        width ?: number;
+        height ?: number;
+    };
+    flip ?: {
+        x ?: boolean;
+        y ?: boolean;
+    };
+    animation ?: {
+        name : string;
+        progress : number;
+    };
+}>;
 
 export type RectConfig<State> = EntityConfig<State, {
     fill ?: string;
@@ -101,7 +132,7 @@ export type EntityConfig<State, EntityData> = {
     draw : (event : DrawEventConfig<State, EntityData>) => void;
 } & EntityData;
 
-export type Entity<State> = TextConfig<State> | RectConfig<State>;
+export type Entity<State> = TextConfig<State> | RectConfig<State> | ImageConfig<State>;
 
 export type LayerConfig<State> = {
     entities : Entity<State>[];
@@ -114,6 +145,7 @@ export type SceneConfig<State> = {
 export type GameConfig<State> = {
     debug ?: boolean;
     keys ?: Partial<Record<KeyValues, boolean>>;
+    images ?: Record<string, string>;
     gravity ?: {
         x ?: number;
         y ?: number;

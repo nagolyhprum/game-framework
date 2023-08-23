@@ -31,8 +31,10 @@ export const draw = <T>(config : GameConfig<T>, output : Output, delta : number)
 			}
 		});
 	});
-	// FPS
-	output.setFill("red");
-	output.setTextAlign("right");
-	output.fillText(`${Math.floor(1 / delta)}`, output.getWidth() - 10, output.getHeight() - 10);
+	if(config.debug) {
+		// FPS
+		output.setFill("red");
+		output.setTextAlign("right");
+		output.fillText(`${Math.floor(1 / delta)}`, output.getWidth() - 10, output.getHeight() - 10);
+	}
 };

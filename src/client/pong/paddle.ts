@@ -1,5 +1,10 @@
-import { rect, Output, follow, stop, vertical } from "../lib/game";
+import { rect, Output, follow, stop, vertical, collides, all } from "../lib/index";
 import { VELOCITY } from "../shared";
+
+const collision = all(
+	collides,
+	stop,
+);
 
 const PADDLE = (output : Output) => ({
 	y: output.getHeight() / 2,
@@ -21,7 +26,7 @@ export const leftPaddle = (output : Output) => rect({
 	events: {
 		update: vertical(VELOCITY),
 		collision: {
-			wall: stop,
+			wall: collision,
 		},
 	},
 });
@@ -35,7 +40,7 @@ export const rightPaddle = (output : Output) => rect({
 	},
 	events: {
 		collision: {
-			wall: stop,
+			wall: collision,
 		},
 		update: follow("ball", {
 			x: 0,
