@@ -1,5 +1,4 @@
-import { entity } from "../lib/entity";
-import { text, Output, UpdateEventConfig, WithState } from "../lib/index";
+import { entity, text, Output, UpdateEventConfig, WithState } from "../lib/index";
 import { State } from "../state";
 
 const SCORE = {

@@ -1,5 +1,4 @@
-import { entity } from "../lib/entity";
-import { Output, all, collision, movement } from "../lib/index";
+import { entity, Output, all, collision, movement } from "../lib/index";
 import { VELOCITY } from "../shared";
 
 const update = all(

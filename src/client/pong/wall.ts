@@ -1,5 +1,4 @@
-import { entity } from "../lib/entity";
-import { Output } from "../lib/index";
+import { entity, Output } from "../lib/index";
 
 const WALL = (output : Output) => ({
 	x: 0,

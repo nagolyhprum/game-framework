@@ -1,5 +1,4 @@
-import { entity } from "../lib/entity";
-import { Output, collision, CollisionEventConfig, WithState, PartialEntity } from "../lib/index";
+import { entity, Output, collision, CollisionEventConfig, WithState, PartialEntity } from "../lib/index";
 import { State } from "../state";
 
 const GOAL = (output : Output) : PartialEntity => ({

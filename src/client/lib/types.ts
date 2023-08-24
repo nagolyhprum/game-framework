@@ -45,8 +45,8 @@ export type Output = {
     ) : void;
     loadImage(name : string, url : string) : Promise<void>;
     loadAudio(name : string, url : string) : Promise<void>;
-    play(name : string, loop : boolean) : void;
-    stop(name : string) : void;
+    play(config : { name : string; loop : boolean; id : string; }) : void;
+    stop(config : { name : string; id : string; }) : void;
 };
 
 export type Alignment = "left" | "center" | "right";
@@ -56,10 +56,12 @@ export type Baseline = "top" | "middle" | "bottom";
 export type AudioPlayConfig = {
     name : string;
     loop ?: boolean;
+    id : (event : UpdateEventConfig) => string;
 };
 
 export type AudioStopConfig = {
     name : string;
+    id : (event : UpdateEventConfig) => string;
 };
 
 export type EventConfig<EventData> = {
@@ -120,6 +122,7 @@ export type UpdateEventConfig = EventConfig<{
 export type PartialEntity = RecursivePartial<Entity>;
 
 export type Entity = {
+    id : string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data : any;
     // TEXT

@@ -1,10 +1,15 @@
 import { rect } from "./rect";
-import { Entity, RecursivePartial } from "./types";
+import { Entity, RecursivePartial, UpdateEventConfig } from "./types";
+
+export const id = (event : UpdateEventConfig) => {
+	return event.entity.id;
+};
 
 export const entity = (
 	input : RecursivePartial<Entity>,
 ) : Entity => {
 	return {
+		id: crypto.randomUUID(),
 		x: input.x ?? 0,
 		y: input.y ?? 0,
 		width: input.width ?? 0,

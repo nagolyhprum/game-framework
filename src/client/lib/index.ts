@@ -14,6 +14,7 @@ export * from "./helper";
 export * from "./animation";
 export * from "./audio";
 export * from "./keyboard";
+export * from "./entity";
 
 export const game = (generate  : (output : Output) => RecursivePartial<GameConfig>) => async (output : Output) => {
 	const input = generate(output);

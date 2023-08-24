@@ -1,6 +1,4 @@
-import { entity } from "../lib/entity";
-import { flip, image, keyboard } from "../lib/index";
-import { KEY, Output, all, animation, audio } from "../lib/index";
+import { flip, image, keyboard, entity, id, KEY, Output, all, animation, audio } from "../lib/index";
 
 const width = 224 / 7;
 const height = 384 / 12;
@@ -58,22 +56,38 @@ export const ninja = (output : Output) => entity({
 			flip({
 				x: true,
 			}),
-			audio.play({
-				name: "walk",
-				loop: true,
-			}),
 		)),
+		keyboard.keydown(KEY.ArrowLeft, audio.play({
+			name: "walk",
+			loop: true,
+			id,
+		})),
+		keyboard.keyup(KEY.ArrowLeft, audio.stop({
+			name: "walk",
+			id,
+		})),
 		keyboard.keyhold(KEY.ArrowRight, all(
 			animate.walk,
 			flip(),
 			audio.play({
 				name: "walk",
 				loop: true,
+				id,
 			}),
 		)),
+		keyboard.keydown(KEY.ArrowRight, audio.play({
+			name: "walk",
+			loop: true,
+			id,
+		})),
+		keyboard.keyup(KEY.ArrowRight, audio.stop({
+			name: "walk",
+			id,
+		})),
 		keyboard.keyhold(KEY.Space, animate.jump),
 		keyboard.keydown(KEY.Space, audio.play({
 			name: "jump",
+			id,
 		})),
 		keyboard.keyup(KEY.Space, animate.fall),
 		animate,

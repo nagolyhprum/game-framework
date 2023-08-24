@@ -1,4 +1,4 @@
-import { Alignment, Baseline, InputEventConfig, KeyValues, Output } from "./types";
+import { Alignment, Baseline, InputEventConfig, KeyValues, Output, RecursivePartial } from "./types";
 
 export const BrowserOutput = (selector : string, width : number, height : number) : Output => {
 	const canvas = document.querySelector<HTMLCanvasElement>(selector)!;
@@ -11,6 +11,7 @@ export const BrowserOutput = (selector : string, width : number, height : number
 	context.scale(devicePixelRatio, devicePixelRatio);
 	const images : Record<string, HTMLImageElement> = {};
 	const audios : Record<string, HTMLAudioElement> = {};
+	const playing : RecursivePartial<Record<string, Record<string, HTMLAudioElement>>> = {};
 	return {
 		onEvent(callback : (config : InputEventConfig) => void) {
 			const isDown : Record<string, boolean> = {};
@@ -130,12 +131,18 @@ export const BrowserOutput = (selector : string, width : number, height : number
 		scale(x : number, y : number) {
 			context.scale(x, y);
 		},
-		play(name, loop) {
-			audios[name].loop = loop ?? false;	
-			audios[name].play();
+		play({ name, loop, id }) {
+			const byName = playing[name] = playing[name] ?? {};
+			const byId = byName[id] = byName[id] ?? audios[name].cloneNode() as HTMLAudioElement;
+			if(byId.paused) {
+				byId.loop = loop ?? false;	
+				byId.currentTime = 0;
+				byId.play?.();
+			}
 		},
-		stop(name) {
-			audios[name].play();		
+		stop({ name, id }) {
+			console.log("STOPPING");
+			playing[name]?.[id]?.pause?.();
 		},
 	};
 };
