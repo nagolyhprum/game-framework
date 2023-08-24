@@ -1,20 +1,23 @@
 import { GameConfig, Output } from "./types";
 
-export const draw = <T>(config : GameConfig<T>, output : Output, delta : number) => {
+export const draw = (config : GameConfig, output : Output, delta : number) => {
 	output.clear(config.background);
-	config.scenes[config.scene].layers.forEach(layer => {
+	config.scenes[config.scene]?.layers.forEach(layer => {
 		layer.entities.forEach(entity => {
 			output.save();
-			output.translate(-(entity.width ?? 0) * (entity.anchor?.x ?? 0), -(entity.height ?? 0) * (entity.anchor?.y ?? 0));
+			output.translate(-entity.width * entity.anchor.x, -entity.height * entity.anchor.y);
 			entity.draw({
 				entity,
 				output,
+				game: config,
+				data: null,
+				layer,
 			});
 			if(config.debug) {
 				// OUTLINE
 				output.setStroke("green");
 				output.setDash([5, 5]);
-				output.strokeRect(entity.x, entity.y, (entity.width ?? 0), (entity.height ?? 0));
+				output.strokeRect(entity.x, entity.y, entity.width, entity.height);
 			}
 			output.restore();
 			if(config.debug) {
@@ -25,7 +28,7 @@ export const draw = <T>(config : GameConfig<T>, output : Output, delta : number)
 				output.setStroke("red");
 				output.path(context => {
 					context.moveTo(entity.x, entity.y);
-					context.lineTo(entity.x + (entity.velocity?.x ?? 0), entity.y + (entity.velocity?.y ?? 0));
+					context.lineTo(entity.x + entity.velocity.x, entity.y + entity.velocity.y);
 					context.stroke();
 				});
 			}

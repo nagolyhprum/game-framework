@@ -10,6 +10,7 @@ export const BrowserOutput = (selector : string, width : number, height : number
 	const context = canvas.getContext("2d")!;
 	context.scale(devicePixelRatio, devicePixelRatio);
 	const images : Record<string, HTMLImageElement> = {};
+	const audios : Record<string, HTMLAudioElement> = {};
 	return {
 		onEvent(callback : (config : InputEventConfig) => void) {
 			const isDown : Record<string, boolean> = {};
@@ -116,8 +117,25 @@ export const BrowserOutput = (selector : string, width : number, height : number
 				});
 			});
 		},
+		loadAudio(name : string, url : string) {
+			const audio = new Audio();
+			audio.src = url;
+			return new Promise<void>(resolve => {
+				audio.addEventListener("canplaythrough", () => {
+					audios[name] = audio;
+					resolve();
+				});
+			});
+		},
 		scale(x : number, y : number) {
 			context.scale(x, y);
+		},
+		play(name, loop) {
+			audios[name].loop = loop ?? false;	
+			audios[name].play();
+		},
+		stop(name) {
+			audios[name].play();		
 		},
 	};
 };

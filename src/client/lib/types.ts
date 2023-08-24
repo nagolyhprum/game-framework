@@ -29,7 +29,7 @@ export type Output = {
     setStroke(stroke : string) : void;
     stroke() : void;
     fill() : void;
-    setDash(dash : number[]) : void;
+    setDash(dash : Array<number>) : void;
     strokeRect(x : number, y : number, width : number, height : number) : void;
     clear(color : string) : void;
     drawImage(
@@ -44,59 +44,66 @@ export type Output = {
         dh : number,
     ) : void;
     loadImage(name : string, url : string) : Promise<void>;
+    loadAudio(name : string, url : string) : Promise<void>;
+    play(name : string, loop : boolean) : void;
+    stop(name : string) : void;
 };
 
 export type Alignment = "left" | "center" | "right";
 
 export type Baseline = "top" | "middle" | "bottom";
 
-export type ImageConfig<State> = EntityConfig<State, {
-    src ?: {
-        name : string;
-        x ?: number;
-        y ?: number;
-        width ?: number;
-        height ?: number;
-    };
-    flip ?: {
-        x ?: boolean;
-        y ?: boolean;
-    };
-    animation ?: {
-        name : string;
-        progress : number;
-    };
-}>;
-
-export type RectConfig<State> = EntityConfig<State, {
-    fill ?: string;
-}>;
-
-export type TextConfig<State> = EntityConfig<State, {
-    text ?: string;
-    fill ?: string;
-    align ?: Alignment;
-    baseline ?: Baseline;
-}>;
-
-export type Anchor = {
-    x ?: number;
-    y ?: number;
+export type AudioPlayConfig = {
+    name : string;
+    loop ?: boolean;
 };
 
-export type EventConfig<State, EntityData, EventData> = {
-    entity : EntityConfig<State, EntityData> & EntityData;
+export type AudioStopConfig = {
+    name : string;
+};
+
+export type EventConfig<EventData> = {
+    entity : Entity;
     data : EventData;
-    game : GameConfig<State>;
-};
-
-export type DrawEventConfig<State, EntityData> = {
-    entity : EntityConfig<State, EntityData>;
+    game : GameConfig;
     output : Output;
+    layer : LayerConfig;
 };
 
-export type CollisionEventConfig<State, EntityData> = EventConfig<State, EntityData, {
-    other : EntityConfig<State, unknown>;
+export type DrawEventConfig = EventConfig<null>;
+
+export type WithData<T, Data> = {
+    [P in keyof T] : 
+        T[P] extends Entity ? Omit<T[P], "data"> & { data : Data; }:
+        T[P] extends Array<infer U> ? Array<WithData<U, Data>>:
+        T[P] extends object ? WithData<T[P], Data>:
+        T[P];
+};
+
+export type WithState<T, State> = {
+    [P in keyof T] : 
+        T[P] extends GameConfig ? Omit<T[P], "state"> & { state : State; }:
+        T[P] extends Array<infer U> ? Array<WithState<U, State>>:
+        T[P] extends object ? WithState<T[P], State>:
+        T[P];
+};
+
+export type RecursivePartial<T> = {
+    [P in keyof T] ?:
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        T[P] extends (...args : any[]) => any ? T[P]:
+      T[P] extends Array<infer U> ? Array<RecursivePartial<U>>:
+      T[P] extends object ? RecursivePartial<T[P]>:
+      T[P];
+  };
+
+export type CollisionData = {
+    isOnGround : boolean;
+    isOnWall : boolean;
+};
+
+export type CollisionEventConfig = EventConfig<{
+    other : Entity;
     coordinate : Coordinate;
     collision : {
         self : Rect;
@@ -105,61 +112,78 @@ export type CollisionEventConfig<State, EntityData> = EventConfig<State, EntityD
     };
 }>;
 
-export type UpdateEventConfig<State, EntityData> = EventConfig<State, EntityData, {
+export type UpdateEventConfig = EventConfig<{
     delta : number;
+    coordinate : Coordinate;
 }>;
 
-export type EntityConfig<State, EntityData> = {
+export type PartialEntity = RecursivePartial<Entity>;
+
+export type Entity = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data : any;
+    // TEXT
+    text : string;
+    align : Alignment;
+    baseline : Baseline;
+    // IMAGE
+    src : {
+        name : string;
+        x : number;
+        y : number;
+        width : number;
+        height : number;
+    };
+    flip : {
+        x : boolean;
+        y : boolean;
+    };
+    animation : {
+        name : string;
+        progress : number;
+        previous : string;
+    };
+    // BASE
+    fill : string;
     x : number;
     y : number;
-    width ?: number;
-    height ?: number;
-    anchor ?: Anchor;    
-    name ?: string;
-    weight ?: number;
-    data ?: Record<string, unknown>;
-    events ?: {
-        keydown ?: Partial<Record<KeyValues, (event : EventConfig<State, EntityData, null>) => void>>;
-        keyup ?: Partial<Record<KeyValues, (event : EventConfig<State, EntityData, null>) => void>>;
-        collision ?: Record<string, null | ((event : CollisionEventConfig<State, EntityData>) => void)>;
-        update ?: (event : UpdateEventConfig<State, EntityData>) => void;
-        custom ?: Record<string, null | ((event : EventConfig<State, EntityData, unknown>) => void)>;
+    width : number;
+    height : number;
+    anchor : {
+        x : number;
+        y : number;
+    };    
+    name : string;
+    velocity : {
+        x : number;
+        y : number;
     };
-    velocity ?: {
-        x ?: number;
-        y ?: number;
-    };
-    draw : (event : DrawEventConfig<State, EntityData>) => void;
-} & EntityData;
-
-export type Entity<State> = TextConfig<State> | RectConfig<State> | ImageConfig<State>;
-
-export type LayerConfig<State> = {
-    entities : Entity<State>[];
+    draw : (event : DrawEventConfig) => void;
+    update : (event : UpdateEventConfig) => void;
+    events : Partial<Record<string, null | ((event : EventConfig<unknown>) => void)>>;
 };
 
-export type SceneConfig<State> = {
-    layers : LayerConfig<State>[];
+export type LayerConfig = {
+    entities : Array<Entity>;
 };
 
-export type GameConfig<State> = {
-    debug ?: boolean;
-    keys ?: Partial<Record<KeyValues, boolean>>;
-    images ?: Record<string, string>;
-    gravity ?: {
-        x ?: number;
-        y ?: number;
-    };
-    state : State;
+export type SceneConfig = {
+    layers : Array<LayerConfig>;
+};
+
+export type GameConfig = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    state : any ;
+    debug : boolean;
+    keys : Partial<Record<KeyValues, boolean>>;
+    images : Partial<Record<string, string>>;
+    audio : Partial<Record<string, string>>;
     background : string;
     scene : string;
-    scenes : Record<string, SceneConfig<State>>;
-    findNode : (name : string) => EntityConfig<State, unknown> | null;
+    scenes : Partial<Record<string, SceneConfig>>;
+    findNode : (name : string) => Entity | null;
     trigger : (name : string, data ?: unknown) => void;
 };
-
-export type WithoutEntityFunctions<T> = Omit<T, "draw">;
-export type WithoutGameFunctions<T> = Omit<T, "findNode" | "trigger">;
 
 export const KEY = {
 	W: "w",
@@ -183,3 +207,24 @@ export const COMPLEMENTS = {
 export const COORDINATES = ["x", "y"] as const;
 
 export type Coordinate = typeof COORDINATES[number];
+
+export type AnimationAnimations = Record<string, {
+	fps : number;
+    frames : Array<{
+        x : number;
+        y : number;
+    }>;
+}>;
+
+export type AnimationConfig<T extends AnimationAnimations> = {
+    name : string;
+    width : number;
+    height : number;
+    animations : T;
+};
+
+export type AnimationHandler<T> = (
+    (event : EventConfig<unknown>) => void
+) & {
+    [K in keyof T] : (event : EventConfig<unknown>) => void;
+};

@@ -44,3 +44,6 @@ rules:
     - error
     - before: true
       after: true
+  no-extra-parens:
+    - error
+    - all

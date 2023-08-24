@@ -1,16 +1,9 @@
-import { DrawEventConfig, RectConfig, WithoutEntityFunctions } from "./types";
+import { DrawEventConfig } from "./types";
 
-const drawRect = <T>({
+export const rect = ({
 	entity,
 	output,
-} : DrawEventConfig<T, RectConfig<T>>) => {
-	output.setFill(entity.fill ?? "transparent");
-	output.fillRect(entity.x, entity.y, entity.width ?? 0, entity.height ?? 0);
-};
-
-export const rect = <T>(config : WithoutEntityFunctions<RectConfig<T>>) : RectConfig<T> => {
-	return {
-		...config,
-		draw: drawRect,
-	};
+} : DrawEventConfig) => {
+	output.setFill(entity.fill);
+	output.fillRect(entity.x, entity.y, entity.width, entity.height);
 };

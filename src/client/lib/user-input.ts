@@ -1,26 +1,10 @@
 import { GameConfig, Output } from "./types";
 
-export const handleUserInput = <T>(config : GameConfig<T>, output : Output) => {
+export const handleUserInput = (config : GameConfig, output : Output) => {
 	output.onEvent(event => {
-		config.scenes[config.scene].layers.forEach(layer => {
-			layer.entities.forEach(entity => {
-				const entityEvents = entity.events;
-				if(entityEvents) {
-					const name = event.name;
-					const keys = config.keys = config.keys ?? {};
-					keys[event.key] = name === "keydown";
-					if(name === "keydown" || name === "keyup") {
-						const keyEvent = entityEvents[name];
-						if(keyEvent) {
-							keyEvent[event.key]?.({
-								entity,
-								game: config,
-								data: null,
-							});
-						}
-					}
-				}
-			});
-		});
+		const name = event.name;
+		if(name === "keydown" || name === "keyup") {
+			config.keys[event.key] = name === "keydown";
+		}
 	});
 };

@@ -1,59 +1,70 @@
-import { data, velocity } from "./helper";
 import { KEY, UpdateEventConfig } from "./types";
 
-export const follow = (name : string, max : {
-    x : number;
-    y : number;
-}) => <T, U>(config : UpdateEventConfig<T, U>) => {
-	const self = config.entity;
-	const other = config.game.findNode(name);
-	if(other) {
-		const selfCenter = {
-			x: self.x + (self.width ?? 0) / 2 - (self.width ?? 0) * (self.anchor?.x ?? 0),
-			y: self.y + (self.height ?? 0) / 2 - (self.height ?? 0) * (self.anchor?.y ?? 0),
-		};
-		const otherCenter = {
-			x: other.x + (other.width ?? 0) / 2 - (other.width ?? 0) * (other.anchor?.x ?? 0),
-			y: other.y + (other.height ?? 0) / 2 - (other.height ?? 0) * (other.anchor?.y ?? 0),
-		};
-		const dx = Math.sign(otherCenter.x - selfCenter.x);
-		const dy = Math.sign(otherCenter.y - selfCenter.y);
-		velocity(self).x = max.x * dx;
-		velocity(self).y = max.y * dy;
-	}
-};
-
-export const vertical = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
-	velocity(event.entity).y = 0;
-	if(event.game.keys?.[KEY.ArrowUp]) {
-		velocity(event.entity).y = -speed;
-	}
-	if(event.game.keys?.[KEY.ArrowDown]) {
-		velocity(event.entity).y = (velocity(event.entity).y ?? 0) + speed;
-	}
-};
-
-export const horizontal = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
-	velocity(event.entity).x = 0;
-	if(event.game.keys?.[KEY.ArrowLeft]) {
-		velocity(event.entity).x = -speed;
-	}
-	if(event.game.keys?.[KEY.ArrowRight]) {
-		velocity(event.entity).x = (velocity(event.entity).x ?? 0) + speed;
-	}
-};
-
-export const slide = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
-	if(data(event.entity).isOnWall && (velocity(event.entity).y ?? 0) > 0) {
-		velocity(event.entity).y = speed;
-	}
-};
-
-export const jump = (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
-	if(data(event.entity).isOnGround && event.game.keys?.[KEY.Space]) {
-		velocity(event.entity).y = -speed;
-	}
-	if((velocity(event.entity).y ?? 0) < 0 && !event.game.keys?.[KEY.Space]) {
-		velocity(event.entity).y = 0;
-	}
+export const movement = {
+	follow: (name : string, max : {
+		x : number;
+		y : number;
+	}) => (config : UpdateEventConfig) => {
+		const self = config.entity;
+		const other = config.game.findNode(name);
+		if(other) {
+			const selfCenter = {
+				x: self.x + self.width / 2 - self.width * self.anchor.x,
+				y: self.y + self.height / 2 - self.height * self.anchor.y,
+			};
+			const otherCenter = {
+				x: other.x + other.width / 2 - other.width * other.anchor.x,
+				y: other.y + other.height / 2 - other.height * other.anchor.y,
+			};
+			const dx = Math.sign(otherCenter.x - selfCenter.x);
+			const dy = Math.sign(otherCenter.y - selfCenter.y);
+			self.velocity.x = max.x * dx;
+			self.velocity.y = max.y * dy;
+		}
+	},
+	vertical: (speed : number) => (event : UpdateEventConfig) => {
+		event.entity.velocity.y = 0;
+		if(event.game.keys[KEY.ArrowUp]) {
+			event.entity.velocity.y = -speed;
+		}
+		if(event.game.keys[KEY.ArrowDown]) {
+			event.entity.velocity.y = event.entity.velocity.y + speed;
+		}
+	},
+	horizontal: (speed : number) => (event : UpdateEventConfig) => {
+		event.entity.velocity.x = 0;
+		if(event.game.keys[KEY.ArrowLeft]) {
+			event.entity.velocity.x = -speed;
+		}
+		if(event.game.keys[KEY.ArrowRight]) {
+			event.entity.velocity.x = event.entity.velocity.x + speed;
+		}
+	},
+	slide: (speed : number) => (event : UpdateEventConfig) => {
+		if(event.entity.data.isOnWall && event.entity.velocity.y > 0) {
+			event.entity.velocity.y = speed;
+		}
+	},
+	jump: (speed : number) => (event : UpdateEventConfig) => {
+		if(event.entity.data.isOnGround && event.game.keys[KEY.Space]) {
+			event.entity.velocity.y = -speed;
+		}
+		if(event.entity.velocity.y < 0 && !event.game.keys[KEY.Space]) {
+			event.entity.velocity.y = 0;
+		}
+	},
+	update: (event : UpdateEventConfig) => {
+		event.entity[event.data.coordinate] = event.entity[event.data.coordinate] + event.entity.velocity[event.data.coordinate] * event.data.delta;
+		if(event.data.coordinate === "y") {
+			event.entity.data.isOnGround = false;
+		} else {
+			event.entity.data.isOnWall = false;
+		}
+	},
+	gravity: (direction : {
+		x ?: number;
+		y ?: number;
+	}) => (event : UpdateEventConfig) => {
+		event.entity.velocity[event.data.coordinate] += (direction[event.data.coordinate] ?? 0) * event.data.delta * event.data.delta;
+	},
 };

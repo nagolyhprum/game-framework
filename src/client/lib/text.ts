@@ -1,18 +1,11 @@
-import { DrawEventConfig, TextConfig, WithoutEntityFunctions } from "./types";
+import { DrawEventConfig } from "./types";
 
-const drawText = <T>({
+export const text = ({
 	entity,
 	output,
-} : DrawEventConfig<T, TextConfig<T>>) => {
-	output.setFill(entity.fill ?? "transparent");
-	output.setTextAlign(entity.align ?? "left");
-	output.setTextBaseline(entity.baseline ?? "top");
-	output.fillText(entity.text ?? "", entity.x, entity.y);
-};
-
-export const text = <T>(config : WithoutEntityFunctions<TextConfig<T>>) : TextConfig<T> => {
-	return {
-		...config,
-		draw: drawText,
-	};
+} : DrawEventConfig) => {
+	output.setFill(entity.fill);
+	output.setTextAlign(entity.align);
+	output.setTextBaseline(entity.baseline);
+	output.fillText(entity.text, entity.x, entity.y);
 };

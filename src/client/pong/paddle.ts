@@ -1,9 +1,15 @@
-import { rect, Output, follow, stop, vertical, collides, all } from "../lib/index";
+import { entity } from "../lib/entity";
+import { Output, all, collision, movement } from "../lib/index";
 import { VELOCITY } from "../shared";
 
-const collision = all(
-	collides,
-	stop,
+const update = all(
+	movement.update,
+	collision.detect({
+		wall: all(
+			collision.resolve,
+			collision.stop,
+		),
+	}),
 );
 
 const PADDLE = (output : Output) => ({
@@ -20,31 +26,27 @@ const PADDLE = (output : Output) => ({
 	},
 });
 
-export const leftPaddle = (output : Output) => rect({
+export const leftPaddle = (output : Output) => entity({
 	...PADDLE(output),
 	x: 10,
-	events: {
-		update: vertical(VELOCITY),
-		collision: {
-			wall: collision,
-		},
-	},
+	update: all(
+		update,
+		movement.vertical(VELOCITY),
+	),
 });
 
-export const rightPaddle = (output : Output) => rect({
+export const rightPaddle = (output : Output) => entity({
 	...PADDLE(output),
 	x: output.getWidth() - 10,
 	anchor: {
 		x: 1,
 		y: .5,
 	},
-	events: {
-		collision: {
-			wall: collision,
-		},
-		update: follow("ball", {
+	update: all(
+		update,
+		movement.follow("ball", {
 			x: 0,
 			y: VELOCITY,
 		}),
-	},
+	),
 });

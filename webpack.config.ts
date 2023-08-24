@@ -10,7 +10,7 @@ const shared = {
 				exclude: ["/node_modules/"],
 			},
 			{
-				test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+				test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|flac|wav|mp3|ogg)$/i,
 				type: "asset",
 			},
 		],

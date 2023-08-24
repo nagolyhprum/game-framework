@@ -1,16 +1,12 @@
-import { EntityConfig, Rect } from "./types";
+import { Entity, Rect } from "./types";
 
-export const velocity = (entity : EntityConfig<unknown, unknown>) => {
-	return entity.velocity = entity.velocity ?? {};
-};
-
-export const data = (entity : EntityConfig<unknown, unknown>) => {
-	return entity.data = entity.data ?? {};
-};
-
-export const toRect = (entity : EntityConfig<unknown, unknown>) : Rect => ({
-	x: entity.x - ((entity.width ?? 0) * (entity.anchor?.x ?? 0)),
-	y: entity.y - ((entity.height ?? 0) * (entity.anchor?.y ?? 0)),
-	width: entity.width ?? 0,
-	height: entity.height ?? 0,
+export const toRect = (entity : Entity) : Rect => ({
+	x: entity.x - entity.width * entity.anchor.x,
+	y: entity.y - entity.height * entity.anchor.y,
+	width: entity.width,
+	height: entity.height,
 });
+
+export const all = <T>(...callbacks : Array<(event : T) => void>) => (event : T) => {
+	callbacks.forEach(callback => callback(event));
+};

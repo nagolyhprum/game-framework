@@ -1,12 +1,13 @@
-import { bounce, rect, Output, velocity, all, collides } from "../lib/index";
+import { entity } from "../lib/entity";
+import { Output, all, collision, movement } from "../lib/index";
 import { VELOCITY } from "../shared";
 
-const collision = all(
-	collides,
-	bounce,
+const react = all(
+	collision.resolve,
+	collision.bounce,
 );
 
-export const ball = (output : Output) => rect({
+export const ball = (output : Output) => entity({
 	x: output.getWidth() / 2,
 	y: output.getHeight() / 2,
 	anchor: {
@@ -17,17 +18,18 @@ export const ball = (output : Output) => rect({
 	height: 10,
 	fill: "white",
 	name: "ball",
+	update: all(
+		movement.update,
+		collision.detect({
+			wall: react,
+			paddle: react,
+		}),
+	),
 	events: {
-		collision: {
-			wall: collision,
-			paddle: collision,
-		},
-		custom: {
-			goal: ({ entity }) => {
-				entity.x = output.getWidth() / 2;
-				entity.y = output.getHeight() / 2;
-				velocity(entity).x = -(velocity(entity).x ?? 0);
-			},
+		goal: ({ entity }) => {
+			entity.x = output.getWidth() / 2;
+			entity.y = output.getHeight() / 2;
+			entity.velocity.x = -entity.velocity.x;
 		},
 	},
 	velocity: {

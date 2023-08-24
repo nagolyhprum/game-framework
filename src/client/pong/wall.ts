@@ -1,4 +1,5 @@
-import { rect, Output } from "../lib/index";
+import { entity } from "../lib/entity";
+import { Output } from "../lib/index";
 
 const WALL = (output : Output) => ({
 	x: 0,
@@ -8,12 +9,12 @@ const WALL = (output : Output) => ({
 	name: "wall",
 });
 
-export const topWall = (output : Output) => rect({
+export const topWall = (output : Output) => entity({
 	...WALL(output),
 	y: 30,
 });
 
-export const bottomWall = (output : Output) => rect({
+export const bottomWall = (output : Output) => entity({
 	...WALL(output),
 	y: output.getHeight() - 30,
 	anchor: {

@@ -1,5 +1,6 @@
-import { flip, image } from "../lib/index";
-import { KEY, Output, all, animation } from "../lib/index";
+import { entity } from "../lib/entity";
+import { flip, image, keyboard } from "../lib/index";
+import { KEY, Output, all, animation, audio } from "../lib/index";
 
 const width = 224 / 7;
 const height = 384 / 12;
@@ -40,7 +41,7 @@ const animate = animation({
 	},
 });
 
-export const ninja = (output : Output) => image({
+export const ninja = (output : Output) => entity({
 	x: output.getWidth() / 2,
 	y: output.getHeight() / 2,
 	width: 512,
@@ -49,41 +50,32 @@ export const ninja = (output : Output) => image({
 		x: 0.5,
 		y: 0.5,
 	},
-	events: {
-		update: animate(animate.stand),
-		keydown: {
-			[KEY.ArrowLeft]: all(
-				animate.walk,
-				flip({
-					x: true,
-				}),
-			),
-			[KEY.ArrowRight]: all(
-				animate.walk,
-				flip({
-					x: false,
-				}),
-			),
-			[KEY.Space]: all(
-				animate.jump,
-			),
-		},
-		keyup: {
-			[KEY.ArrowLeft]: all(
-				animate.stand,
-				flip({
-					x: true,
-				}),
-			),
-			[KEY.ArrowRight]: all(
-				animate.stand,
-				flip({
-					x: false,
-				}),
-			),
-			[KEY.Space]: all(
-				animate.fall,
-			),
-		},
-	},    
+	draw: image,
+	update: all(
+		animate.stand,
+		keyboard.keyhold(KEY.ArrowLeft, all(
+			animate.walk,
+			flip({
+				x: true,
+			}),
+			audio.play({
+				name: "walk",
+				loop: true,
+			}),
+		)),
+		keyboard.keyhold(KEY.ArrowRight, all(
+			animate.walk,
+			flip(),
+			audio.play({
+				name: "walk",
+				loop: true,
+			}),
+		)),
+		keyboard.keyhold(KEY.Space, animate.jump),
+		keyboard.keydown(KEY.Space, audio.play({
+			name: "jump",
+		})),
+		keyboard.keyup(KEY.Space, animate.fall),
+		animate,
+	),
 });

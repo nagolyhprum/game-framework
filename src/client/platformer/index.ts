@@ -1,9 +1,10 @@
-import { Output, all, checkGround, checkWall, collides, horizontal, jump, rect, reset, slide, stop } from "../lib/index";
+import { entity } from "../lib/entity";
+import { Output, all, collision, movement } from "../lib/index";
 
 export const platformer = (output : Output) => ({
 	layers: [{
 		entities: [
-			rect({
+			entity({
 				name: "player",
 				x: output.getWidth() / 2,
 				y: output.getHeight() / 2,
@@ -14,25 +15,26 @@ export const platformer = (output : Output) => ({
 				width: 10,
 				height: 10,
 				fill: "white",
-				weight: 10000,
-				events: {
-					update: all(
-						horizontal(100),
-						jump(250),
-						slide(10),
-						reset,
-					),
-					collision: {
+				update: all(
+					movement.horizontal(100),
+					movement.jump(250),
+					movement.slide(10),
+					movement.gravity({
+						x: 0,
+						y: 10000,
+					}),
+					movement.update,
+					collision.detect({
 						platform: all(
-							collides,
-							stop,
-							checkWall,
-							checkGround,					
+							collision.resolve,
+							collision.stop,
+							collision.checkWall,
+							collision.checkGround,					
 						),
-					},
-				},
+					}),
+				),
 			}),
-			rect({
+			entity({
 				name: "platform",
 				x: 100,
 				y: output.getHeight() - 100,
@@ -43,7 +45,7 @@ export const platformer = (output : Output) => ({
 					y: 1,
 				},
 			}),
-			rect({
+			entity({
 				name: "platform",
 				x: 100,
 				y: 100,
@@ -51,7 +53,7 @@ export const platformer = (output : Output) => ({
 				height: 100,
 				fill: "white",
 			}),
-			rect({
+			entity({
 				name: "platform",
 				x: 100,
 				y: 100,
