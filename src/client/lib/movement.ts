@@ -65,6 +65,6 @@ export const movement = {
 		x ?: number;
 		y ?: number;
 	}) => (event : UpdateEventConfig) => {
-		event.entity.velocity[event.data.coordinate] += (direction[event.data.coordinate] ?? 0) * event.data.delta * event.data.delta;
+		event.entity.velocity[event.data.coordinate] += (direction[event.data.coordinate] ?? 0) * event.data.delta;
 	},
 };

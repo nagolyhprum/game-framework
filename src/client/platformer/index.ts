@@ -20,7 +20,7 @@ export const platformer = (output : Output) => ({
 					movement.slide(10),
 					movement.gravity({
 						x: 0,
-						y: 10000,
+						y: 500,
 					}),
 					movement.update,
 					collision.detect({
