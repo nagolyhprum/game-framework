@@ -88,21 +88,24 @@ export const BrowserOutput = (selector : string, width : number, height : number
 		},
 		drawImage(
 			name : string, 
-			sx : number,
-			sy : number,
-			sw : number,
-			sh : number,
+			column : number,
+			row : number,
+			columns : number,
+			rows : number,
 			dx : number, 
 			dy : number, 
 			dw : number, 
 			dh : number,
 		) {
+			const image = images[name];
+			const width = image.width / columns;
+			const height = image.height / rows;
 			context.drawImage(
 				images[name], 
-				sx, 
-				sy, 
-				sw, 
-				sh,
+				column * width,
+				row * height,
+				width,
+				height,
 				dx, 
 				dy, 
 				dw, 

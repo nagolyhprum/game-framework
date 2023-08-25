@@ -11,10 +11,10 @@ export const image = ({
 	);
 	output.drawImage(
 		entity.src.name, 
-		entity.src.x,
-		entity.src.y,
-		entity.src.width,
-		entity.src.height,		
+		entity.src.column,
+		entity.src.row,
+		entity.src.columns,
+		entity.src.rows,		
 		entity.x * (entity.flip.x ? -1 : 1) - (entity.flip.x ? entity.width : 0), 
 		entity.y * (entity.flip.y ? -1 : 1) - (entity.flip.y ? entity.height : 0), 
 		entity.width, 

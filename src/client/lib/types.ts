@@ -34,10 +34,10 @@ export type Output = {
     clear(color : string) : void;
     drawImage(
         name : string, 
-        sx : number,
-        sy : number,
-        sw : number,
-        sh : number,
+        column : number,
+        row : number,
+        rows : number,
+        columns : number,
         dx : number, 
         dy : number, 
         dw : number, 
@@ -132,10 +132,10 @@ export type Entity = {
     // IMAGE
     src : {
         name : string;
-        x : number;
-        y : number;
-        width : number;
-        height : number;
+        column : number;
+        row : number;
+        columns : number;
+        rows : number;
     };
     flip : {
         x : boolean;
@@ -214,15 +214,15 @@ export type Coordinate = typeof COORDINATES[number];
 export type AnimationAnimations = Record<string, {
 	fps : number;
     frames : Array<{
-        x : number;
-        y : number;
+        column : number;
+        row : number;
     }>;
 }>;
 
 export type AnimationConfig<T extends AnimationAnimations> = {
     name : string;
-    width : number;
-    height : number;
+    columns : number;
+    rows : number;
     animations : T;
 };
 

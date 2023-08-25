@@ -1,39 +1,36 @@
-import { flip, image, keyboard, entity, id, KEY, Output, all, animation, audio } from "../lib/index";
-
-const width = 224 / 7;
-const height = 384 / 12;
+import { flip, image, keyboard, entity, id, KEY, Output, all, animation, audio, random } from "../lib/index";
 
 const animate = animation({
 	name: "ninja",
-	width,
-	height,
+	columns: 7,
+	rows: 12,
 	animations: {
 		stand: {
 			fps: .3,
 			frames: Array.from({ length: 4 }).map((_, i) => ({
-				x: 0,
-				y: i,
+				column: 0,
+				row: i,
 			})),
 		},
 		walk: {
 			fps: .3,
 			frames: Array.from({ length: 4 }).map((_, i) => ({
-				x: 1,
-				y: i,
+				column: 1,
+				row: i,
 			})),
 		},
 		jump: {
 			fps: .3,
 			frames: [{
-				x: 2,
-				y: 0,
+				column: 2,
+				row: 0,
 			}],
 		},
 		fall: {
 			fps: .3,
 			frames: [{
-				x: 2,
-				y: 1,
+				column: 2,
+				row: 1,
 			}],
 		},
 	},
@@ -92,7 +89,7 @@ export const ninja = (output : Output) => entity({
 		keyboard.keyhold(KEY.Space, animate.jump),
 		keyboard.keydown(KEY.Space, audio.play({
 			name: "jump",
-			id: () => crypto.randomUUID(),
+			id: random,
 		})),
 		keyboard.keyup(KEY.Space, animate.fall),
 		animate,

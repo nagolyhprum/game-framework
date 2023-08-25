@@ -14,10 +14,10 @@ export const animation = <T extends AnimationAnimations>(config : AnimationConfi
 		const frame = frames[index];
 		image.src = {
 			name: config.name,
-			x: frame.x * config.width,
-			y: frame.y * config.height,
-			width: config.width,
-			height: config.height,
+			column: frame.column,
+			row: frame.row,
+			columns: config.columns,
+			rows: config.rows,
 		};
 	}) as unknown as Record<string, (event : EventConfig<unknown>) => void>;
 

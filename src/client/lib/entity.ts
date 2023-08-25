@@ -5,6 +5,10 @@ export const id = (event : UpdateEventConfig) => {
 	return event.entity.id;
 };
 
+export const random = () => {
+	return crypto.randomUUID();
+};
+
 export const entity = (
 	input : RecursivePartial<Entity>,
 ) : Entity => {
@@ -38,10 +42,10 @@ export const entity = (
 		},
 		src: {
 			name: input.src?.name ?? "",
-			x: input.src?.x ?? 0,
-			y: input.src?.y ?? 0,
-			width: input.src?.width ?? 0,
-			height: input.src?.height ?? 0,
+			column: input.src?.column ?? 0,
+			row: input.src?.row ?? 0,
+			columns: input.src?.columns ?? 1,
+			rows: input.src?.rows ?? 1,
 		},      
 		draw: input.draw ?? rect,    
 		events: input.events ?? {},
