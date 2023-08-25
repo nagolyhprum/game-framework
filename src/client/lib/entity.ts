@@ -13,7 +13,7 @@ export const entity = (
 	input : RecursivePartial<Entity>,
 ) : Entity => {
 	return {
-		id: crypto.randomUUID(),
+		id: input.id ?? crypto.randomUUID(),
 		x: input.x ?? 0,
 		y: input.y ?? 0,
 		width: input.width ?? 0,

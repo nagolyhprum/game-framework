@@ -13,8 +13,8 @@ export const start = game(output => {
 	return {
 		state,
 		debug: false,
-		background: "black",
-		scene: "platformer",
+		background: "white",
+		scene: "animation",
 		images: {
 			ninja: Ninja,
 		},
