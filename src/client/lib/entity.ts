@@ -1,7 +1,7 @@
 import { rect } from "./rect";
-import { Entity, RecursivePartial, UpdateEventConfig } from "./types";
+import { DefaultData, Entity, RecursivePartial, UpdateEventConfig } from "./types";
 
-export const id = (event : UpdateEventConfig) => {
+export const id = (event : UpdateEventConfig<unknown, unknown>) => {
 	return event.entity.id;
 };
 
@@ -9,9 +9,9 @@ export const random = () => {
 	return crypto.randomUUID();
 };
 
-export const entity = (
-	input : RecursivePartial<Entity>,
-) : Entity => {
+export const entity = <State = unknown, Data = unknown>(
+	input : RecursivePartial<Entity<State, Data>>,
+) : Entity<State, Data> => {
 	return {
 		id: input.id ?? crypto.randomUUID(),
 		x: input.x ?? 0,
@@ -27,7 +27,12 @@ export const entity = (
 			y: input.velocity?.y ?? 0,
 		},
 		name: input.name ?? "",
-		data: input.data ?? {},
+		data: {
+			isOnGround: false,
+			isOnWall: false,
+			keys: {},
+			...input.data ?? {},
+		} as DefaultData & Data,
 		align: input.align ?? "left",
 		animation: {
 			name: input.animation?.name ?? "",

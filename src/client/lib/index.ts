@@ -16,9 +16,9 @@ export * from "./audio";
 export * from "./keyboard";
 export * from "./entity";
 
-export const game = (generate  : (output : Output) => RecursivePartial<GameConfig>) => async (output : Output) => {
+export const game = (generate  : (output : Output) => RecursivePartial<GameConfig<unknown>>) => async (output : Output) => {
 	const input = generate(output);
-	const config : GameConfig = {		
+	const config : GameConfig<unknown> = {		
 		audio: input.audio ?? {},
 		images: input.images ?? {},
 		scenes: input.scenes ?? {},
@@ -57,7 +57,7 @@ export const game = (generate  : (output : Output) => RecursivePartial<GameConfi
 	process(config, output, Date.now());
 };
 
-const process = (config : GameConfig, output : Output, lastUpdate : number) => {
+const process = (config : GameConfig<unknown>, output : Output, lastUpdate : number) => {
 	const now = Date.now();
 	const delta = (now - lastUpdate) / 1000;
 	requestAnimationFrame(() => process(config, output, now));

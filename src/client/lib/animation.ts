@@ -1,7 +1,7 @@
 import { AnimationAnimations, AnimationConfig, AnimationHandler, EventConfig, UpdateEventConfig } from "./types";
 
 export const animation = <T extends AnimationAnimations>(config : AnimationConfig<T>) => {
-	const handler = ((event : UpdateEventConfig) => {		
+	const handler = ((event : UpdateEventConfig<unknown, unknown>) => {		
 		const image = event.entity;
 		if(image.animation.previous !== image.animation.name) {
 			image.animation.progress = 0;
@@ -19,10 +19,10 @@ export const animation = <T extends AnimationAnimations>(config : AnimationConfi
 			columns: config.columns,
 			rows: config.rows,
 		};
-	}) as unknown as Record<string, (event : EventConfig<unknown>) => void>;
+	}) as unknown as Record<string, (event : EventConfig<unknown, unknown, unknown>) => void>;
 
 	Object.keys(config.animations).forEach(key => {
-		handler[key] = (event : EventConfig<unknown>) => {
+		handler[key] = (event : EventConfig<unknown, unknown, unknown>) => {
 			const image = event.entity;
 			image.animation.name = key;
 		};
@@ -34,7 +34,7 @@ export const animation = <T extends AnimationAnimations>(config : AnimationConfi
 export const flip = (flip ?: {
 	x ?: boolean;
 	y ?: boolean;
-}) => (event : EventConfig<unknown>) => {
+}) => (event : EventConfig<unknown, unknown, unknown>) => {
 	event.entity.flip = {
 		x: flip?.x ?? false,
 		y: flip?.y ?? false,

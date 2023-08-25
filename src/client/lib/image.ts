@@ -3,7 +3,7 @@ import { DrawEventConfig } from "./types";
 export const image = ({
 	entity,
 	output,
-} : DrawEventConfig) => {
+} : DrawEventConfig<unknown, unknown>) => {
 	output.save();
 	output.scale(
 		entity.flip.x ? -1 : 1,

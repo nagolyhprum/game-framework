@@ -1,6 +1,6 @@
 import { GameConfig, Output } from "./types";
 
-export const handleUserInput = (config : GameConfig, output : Output) => {
+export const handleUserInput = (config : GameConfig<unknown>, output : Output) => {
 	output.onEvent(event => {
 		const name = event.name;
 		if(name === "keydown" || name === "keyup") {

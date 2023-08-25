@@ -1,6 +1,6 @@
 import { GameConfig, Output } from "./types";
 
-export const draw = (config : GameConfig, output : Output, delta : number) => {
+export const draw = (config : GameConfig<unknown>, output : Output, delta : number) => {
 	output.clear(config.background);
 	config.scenes[config.scene]?.layers.forEach(layer => {
 		layer.entities.forEach(entity => {

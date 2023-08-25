@@ -1,6 +1,6 @@
 import { Entity, Rect } from "./types";
 
-export const toRect = (entity : Entity) : Rect => ({
+export const toRect = (entity : Entity<unknown, unknown>) : Rect => ({
 	x: entity.x - entity.width * entity.anchor.x,
 	y: entity.y - entity.height * entity.anchor.y,
 	width: entity.width,

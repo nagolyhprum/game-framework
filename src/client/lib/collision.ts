@@ -2,23 +2,23 @@ import { toRect } from "./helper";
 import { COMPLEMENTS, CollisionEventConfig, Coordinate, Entity, GameConfig, LayerConfig, Output, Rect, UpdateEventConfig } from "./types";
 
 export const collision = {
-	checkGround: (event : CollisionEventConfig) => {
+	checkGround: (event : CollisionEventConfig<unknown, unknown>) => {
 		if(event.data.coordinate === "y") {
 			event.entity.data.isOnGround = event.data.collision.self.y !== event.data.collision.overlap.y;
 		}
 	},
-	checkWall: (event : CollisionEventConfig) => {
+	checkWall: (event : CollisionEventConfig<unknown, unknown>) => {
 		if(event.data.coordinate === "x") {
 			event.entity.data.isOnWall = true;
 		}
 	},
-	bounce: (event : CollisionEventConfig) => {
+	bounce: (event : CollisionEventConfig<unknown, unknown>) => {
 		event.entity.velocity[event.data.coordinate] = -event.entity.velocity[event.data.coordinate];
 	},
-	stop: (event : CollisionEventConfig) => {
+	stop: (event : CollisionEventConfig<unknown, unknown>) => {
 		event.entity.velocity[event.data.coordinate] = 0;
 	},
-	resolve: (event : CollisionEventConfig) => {
+	resolve: (event : CollisionEventConfig<unknown, unknown>) => {
 		const {
 			entity,
 			data: {
@@ -36,7 +36,7 @@ export const collision = {
 		const alignTo = (sign < 0 ? other[COMPLEMENTS[coordinate]] : 0) + other[coordinate];
 		entity[coordinate] = entity[coordinate] - (toAlign - alignTo);
 	},
-	detect: (callbacks : Record<string, (event : CollisionEventConfig) => void>) => ({
+	detect: <State, Data>(callbacks : Record<string, (event : CollisionEventConfig<State, Data>) => void>) => ({
 		entity,
 		game,
 		output,
@@ -44,7 +44,7 @@ export const collision = {
 		data: {
 			coordinate,
 		},
-	} : UpdateEventConfig) => {
+	} : UpdateEventConfig<State, Data>) => {
 		const collisions = new Set(Object.keys(callbacks));
 		const candidates = layer.entities.filter(entity => collisions.has(entity.name));   
 		checkCollisions({
@@ -68,12 +68,12 @@ const checkCollisions = ({
 	callbacks,
 	layer,
 } : {
-    candidates : Entity[];
+    candidates : Entity<unknown, unknown>[];
     coordinate : Coordinate;
-    entity : Entity;
-    game : GameConfig;
+    entity : Entity<unknown, unknown>;
+    game : GameConfig<unknown>;
 	output : Output;
-	callbacks : Record<string, (event : CollisionEventConfig) => void>;
+	callbacks : Record<string, (event : CollisionEventConfig<unknown, unknown>) => void>;
 	layer : LayerConfig;
 }) => {         
 	candidates.forEach(candidate => {

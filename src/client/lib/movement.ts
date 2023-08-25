@@ -4,7 +4,7 @@ export const movement = {
 	follow: (name : string, max : {
 		x : number;
 		y : number;
-	}) => (config : UpdateEventConfig) => {
+	}) => (config : UpdateEventConfig<unknown, unknown>) => {
 		const self = config.entity;
 		const other = config.game.findNode(name);
 		if(other) {
@@ -22,7 +22,7 @@ export const movement = {
 			self.velocity.y = max.y * dy;
 		}
 	},
-	vertical: (speed : number) => (event : UpdateEventConfig) => {
+	vertical: (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
 		event.entity.velocity.y = 0;
 		if(event.game.keys[KEY.ArrowUp]) {
 			event.entity.velocity.y = -speed;
@@ -31,7 +31,7 @@ export const movement = {
 			event.entity.velocity.y = event.entity.velocity.y + speed;
 		}
 	},
-	horizontal: (speed : number) => (event : UpdateEventConfig) => {
+	horizontal: (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
 		event.entity.velocity.x = 0;
 		if(event.game.keys[KEY.ArrowLeft]) {
 			event.entity.velocity.x = -speed;
@@ -40,12 +40,12 @@ export const movement = {
 			event.entity.velocity.x = event.entity.velocity.x + speed;
 		}
 	},
-	slide: (speed : number) => (event : UpdateEventConfig) => {
+	slide: (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
 		if(event.entity.data.isOnWall && event.entity.velocity.y > 0) {
 			event.entity.velocity.y = speed;
 		}
 	},
-	jump: (speed : number) => (event : UpdateEventConfig) => {
+	jump: (speed : number) => (event : UpdateEventConfig<unknown, unknown>) => {
 		if(event.entity.data.isOnGround && event.game.keys[KEY.Space]) {
 			event.entity.velocity.y = -speed;
 		}
@@ -53,7 +53,7 @@ export const movement = {
 			event.entity.velocity.y = 0;
 		}
 	},
-	update: (event : UpdateEventConfig) => {
+	update: (event : UpdateEventConfig<unknown, unknown>) => {
 		event.entity[event.data.coordinate] = event.entity[event.data.coordinate] + event.entity.velocity[event.data.coordinate] * event.data.delta;
 		if(event.data.coordinate === "y") {
 			event.entity.data.isOnGround = false;
@@ -64,7 +64,7 @@ export const movement = {
 	gravity: (direction : {
 		x ?: number;
 		y ?: number;
-	}) => (event : UpdateEventConfig) => {
+	}) => (event : UpdateEventConfig<unknown, unknown>) => {
 		event.entity.velocity[event.data.coordinate] += (direction[event.data.coordinate] ?? 0) * event.data.delta;
 	},
 };

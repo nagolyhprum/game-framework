@@ -56,39 +56,23 @@ export type Baseline = "top" | "middle" | "bottom";
 export type AudioPlayConfig = {
     name : string;
     loop ?: boolean;
-    id : (event : UpdateEventConfig) => string;
+    id : (event : UpdateEventConfig<unknown, unknown>) => string;
 };
 
 export type AudioStopConfig = {
     name : string;
-    id : (event : UpdateEventConfig) => string;
+    id : (event : UpdateEventConfig<unknown, unknown>) => string;
 };
 
-export type EventConfig<EventData> = {
-    entity : Entity;
+export type EventConfig<EventData, State, Data> = {
+    entity : Entity<State, Data>;
     data : EventData;
-    game : GameConfig;
+    game : GameConfig<State>;
     output : Output;
     layer : LayerConfig;
 };
 
-export type DrawEventConfig = EventConfig<null>;
-
-export type WithData<T, Data> = {
-    [P in keyof T] : 
-        T[P] extends Entity ? Omit<T[P], "data"> & { data : Data; }:
-        T[P] extends Array<infer U> ? Array<WithData<U, Data>>:
-        T[P] extends object ? WithData<T[P], Data>:
-        T[P];
-};
-
-export type WithState<T, State> = {
-    [P in keyof T] : 
-        T[P] extends GameConfig ? Omit<T[P], "state"> & { state : State; }:
-        T[P] extends Array<infer U> ? Array<WithState<U, State>>:
-        T[P] extends object ? WithState<T[P], State>:
-        T[P];
-};
+export type DrawEventConfig<State, Data> = EventConfig<null, State, Data>;
 
 export type RecursivePartial<T> = {
     [P in keyof T] ?:
@@ -99,32 +83,30 @@ export type RecursivePartial<T> = {
       T[P];
   };
 
-export type CollisionData = {
-    isOnGround : boolean;
-    isOnWall : boolean;
-};
-
-export type CollisionEventConfig = EventConfig<{
-    other : Entity;
+export type CollisionEventConfig<State, Data> = EventConfig<{
+    other : Entity<State, Data>;
     coordinate : Coordinate;
     collision : {
         self : Rect;
         other : Rect;
         overlap : Rect;
     };
-}>;
+}, State, Data>;
 
-export type UpdateEventConfig = EventConfig<{
+export type UpdateEventConfig<State, Data> = EventConfig<{
     delta : number;
     coordinate : Coordinate;
-}>;
+}, State, Data>;
 
-export type PartialEntity = RecursivePartial<Entity>;
+export type DefaultData = {
+    isOnWall : boolean;
+    isOnGround : boolean;
+    keys : Record<string, boolean>;
+};
 
-export type Entity = {
+export type Entity<State, Data> = {
     id : string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data : any;
+    data : Data & DefaultData;
     // TEXT
     text : string;
     align : Alignment;
@@ -161,22 +143,21 @@ export type Entity = {
         x : number;
         y : number;
     };
-    draw : (event : DrawEventConfig) => void;
-    update : (event : UpdateEventConfig) => void;
-    events : Partial<Record<string, null | ((event : EventConfig<unknown>) => void)>>;
+    draw : (event : DrawEventConfig<State, Data>) => void;
+    update : (event : UpdateEventConfig<State, Data>) => void;
+    events : Partial<Record<string, null | ((event : EventConfig<unknown, State, Data>) => void)>>;
 };
 
 export type LayerConfig = {
-    entities : Array<Entity>;
+    entities : Array<Entity<unknown, unknown>>;
 };
 
 export type SceneConfig = {
     layers : Array<LayerConfig>;
 };
 
-export type GameConfig = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    state : any ;
+export type GameConfig<State> = {
+    state : State;
     debug : boolean;
     keys : Partial<Record<KeyValues, boolean>>;
     images : Partial<Record<string, string>>;
@@ -184,7 +165,7 @@ export type GameConfig = {
     background : string;
     scene : string;
     scenes : Partial<Record<string, SceneConfig>>;
-    findNode : (name : string) => Entity | null;
+    findNode : (name : string) => Entity<unknown, unknown> | null;
     trigger : (name : string, data ?: unknown) => void;
 };
 
@@ -227,7 +208,7 @@ export type AnimationConfig<T extends AnimationAnimations> = {
 };
 
 export type AnimationHandler<T> = (
-    (event : EventConfig<unknown>) => void
+    (event : EventConfig<unknown, unknown, unknown>) => void
 ) & {
-    [K in keyof T] : (event : EventConfig<unknown>) => void;
+    [K in keyof T] : (event : EventConfig<unknown, unknown, unknown>) => void;
 };
