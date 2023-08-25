@@ -29,7 +29,9 @@ export const collision = {
 				},
 			},
 		} = event;
-		const sign = Math.sign(entity.velocity[coordinate]);
+		const centerSelf = self[coordinate] + self[COMPLEMENTS[coordinate]] / 2;
+		const centerOther = other[coordinate] + other[COMPLEMENTS[coordinate]] / 2;
+		const sign = Math.sign(centerOther - centerSelf);
 		const toAlign = (sign > 0 ? self[COMPLEMENTS[coordinate]] : 0) + self[coordinate];
 		const alignTo = (sign < 0 ? other[COMPLEMENTS[coordinate]] : 0) + other[coordinate];
 		entity[coordinate] = entity[coordinate] - (toAlign - alignTo);
