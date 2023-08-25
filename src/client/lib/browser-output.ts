@@ -9,6 +9,7 @@ export const BrowserOutput = (selector : string, width : number, height : number
 	canvas.tabIndex = 0;
 	const context = canvas.getContext("2d")!;
 	context.scale(devicePixelRatio, devicePixelRatio);
+	context.imageSmoothingEnabled = false;
 	const images : Record<string, HTMLImageElement> = {};
 	const audios : Record<string, HTMLAudioElement> = {};
 	const playing : RecursivePartial<Record<string, Record<string, HTMLAudioElement>>> = {};
@@ -138,10 +139,14 @@ export const BrowserOutput = (selector : string, width : number, height : number
 				byId.loop = loop ?? false;	
 				byId.currentTime = 0;
 				byId.play?.();
+				if(!loop) {
+					byId.onended = () => {
+						delete byName[id];
+					};
+				}
 			}
 		},
 		stop({ name, id }) {
-			console.log("STOPPING");
 			playing[name]?.[id]?.pause?.();
 		},
 	};

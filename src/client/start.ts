@@ -7,12 +7,13 @@ import { state } from "./state";
 import Ninja from "./images/ninja.png";
 import Walk from "./audio/walk.ogg";
 import Jump from "./audio/jump.flac";
+import Background from "./audio/background.mp3";
 
 export const start = game(output => {       
 	return {
 		state,
-		debug: true,
-		background: "black",
+		debug: false,
+		background: "white",
 		scene: "animation",
 		images: {
 			ninja: Ninja,
@@ -20,6 +21,7 @@ export const start = game(output => {
 		audio: {
 			walk: Walk,
 			jump: Jump,
+			background: Background,
 		},
 		scenes: {
 			pong: pong(output),

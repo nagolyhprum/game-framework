@@ -50,6 +50,11 @@ export const ninja = (output : Output) => entity({
 	},
 	draw: image,
 	update: all(
+		audio.play({
+			name: "background",
+			loop: true,
+			id,
+		}),
 		animate.stand,
 		keyboard.keyhold(KEY.ArrowLeft, all(
 			animate.walk,
@@ -87,7 +92,7 @@ export const ninja = (output : Output) => entity({
 		keyboard.keyhold(KEY.Space, animate.jump),
 		keyboard.keydown(KEY.Space, audio.play({
 			name: "jump",
-			id,
+			id: () => crypto.randomUUID(),
 		})),
 		keyboard.keyup(KEY.Space, animate.fall),
 		animate,
