@@ -25,8 +25,8 @@ export const start = game(output => {
 		},
 		scenes: {
 			pong: pong(output),
-			platformer: platformer(output),
 			animation: animation(output),
+			platformer: platformer(output),
 		},
 	};
 });

@@ -86,6 +86,29 @@ export const BrowserOutput = (selector : string, width : number, height : number
 			context.fillStyle = color;
 			context.fillRect(0, 0, width, height);
 		},
+		scale(x : number, y : number) {
+			context.scale(x, y);
+		},
+		loadImage(name : string, url : string) {
+			const image = new Image();
+			image.src = url;
+			return new Promise<void>(resolve => {
+				image.addEventListener("load", () => {
+					images[name] = image;
+					resolve();
+				});
+			});
+		},
+		loadAudio(name : string, url : string) {
+			const audio = new Audio();
+			audio.src = url;
+			return new Promise<void>(resolve => {
+				audio.addEventListener("canplaythrough", () => {
+					audios[name] = audio;
+					resolve();
+				});
+			});
+		},
 		drawImage(
 			name : string, 
 			column : number,
@@ -111,29 +134,6 @@ export const BrowserOutput = (selector : string, width : number, height : number
 				dw, 
 				dh, 
 			);
-		},
-		loadImage(name : string, url : string) {
-			const image = new Image();
-			image.src = url;
-			return new Promise<void>(resolve => {
-				image.addEventListener("load", () => {
-					images[name] = image;
-					resolve();
-				});
-			});
-		},
-		loadAudio(name : string, url : string) {
-			const audio = new Audio();
-			audio.src = url;
-			return new Promise<void>(resolve => {
-				audio.addEventListener("canplaythrough", () => {
-					audios[name] = audio;
-					resolve();
-				});
-			});
-		},
-		scale(x : number, y : number) {
-			context.scale(x, y);
 		},
 		play({ name, loop, id }) {
 			const byName = playing[name] = playing[name] ?? {};

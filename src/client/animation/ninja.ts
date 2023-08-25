@@ -26,14 +26,29 @@ const animate = animation({
 				row: 0,
 			}],
 		},
-		fall: {
-			fps: .3,
-			frames: [{
-				column: 2,
-				row: 1,
-			}],
-		},
 	},
+});
+
+const background = audio.play({
+	name: "background",
+	loop: true,
+	id,
+});
+
+const playWalk = audio.play({
+	name: "walk",
+	loop: true,
+	id,
+});
+
+const stopWalk = audio.stop({
+	name: "walk",
+	id,
+});
+
+const jump = audio.play({
+	name: "jump",
+	id: random,
 });
 
 export const ninja = (output : Output) => entity({
@@ -47,51 +62,30 @@ export const ninja = (output : Output) => entity({
 	},
 	draw: image,
 	update: all(
-		audio.play({
-			name: "background",
-			loop: true,
-			id,
-		}),
+		// DEFAULT
+		background,
 		animate.stand,
+		// LEFT
 		keyboard.keyhold(KEY.ArrowLeft, all(
 			animate.walk,
 			flip({
 				x: true,
 			}),
 		)),
-		keyboard.keydown(KEY.ArrowLeft, audio.play({
-			name: "walk",
-			loop: true,
-			id,
-		})),
-		keyboard.keyup(KEY.ArrowLeft, audio.stop({
-			name: "walk",
-			id,
-		})),
+		keyboard.keydown(KEY.ArrowLeft, playWalk),
+		keyboard.keyup(KEY.ArrowLeft, stopWalk),
+		// RIGHT
 		keyboard.keyhold(KEY.ArrowRight, all(
 			animate.walk,
 			flip(),
-			audio.play({
-				name: "walk",
-				loop: true,
-				id,
-			}),
+			playWalk,
 		)),
-		keyboard.keydown(KEY.ArrowRight, audio.play({
-			name: "walk",
-			loop: true,
-			id,
-		})),
-		keyboard.keyup(KEY.ArrowRight, audio.stop({
-			name: "walk",
-			id,
-		})),
+		keyboard.keydown(KEY.ArrowRight, playWalk),
+		keyboard.keyup(KEY.ArrowRight, stopWalk),
+		// JUMP
 		keyboard.keyhold(KEY.Space, animate.jump),
-		keyboard.keydown(KEY.Space, audio.play({
-			name: "jump",
-			id: random,
-		})),
-		keyboard.keyup(KEY.Space, animate.fall),
+		keyboard.keydown(KEY.Space, jump),
+		// ANIMATE
 		animate,
 	),
 });
