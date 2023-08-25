@@ -23,8 +23,7 @@ export const animation = <T extends AnimationAnimations>(config : AnimationConfi
 
 	Object.keys(config.animations).forEach(key => {
 		handler[key] = (event : EventConfig<unknown, unknown, unknown>) => {
-			const image = event.entity;
-			image.animation.name = key;
+			event.entity.animation.name = key;
 		};
 	});
 
@@ -35,8 +34,6 @@ export const flip = (flip ?: {
 	x ?: boolean;
 	y ?: boolean;
 }) => (event : EventConfig<unknown, unknown, unknown>) => {
-	event.entity.flip = {
-		x: flip?.x ?? false,
-		y: flip?.y ?? false,
-	};
+	event.entity.flip.x = flip?.x ?? false;
+	event.entity.flip.y = flip?.y ?? false;
 };
