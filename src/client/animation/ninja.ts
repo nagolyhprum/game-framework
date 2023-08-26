@@ -85,6 +85,7 @@ export const ninja = (output : Output) => entity({
 		// JUMP
 		keyboard.keyhold(KEY.Space, animate.jump),
 		keyboard.keydown(KEY.Space, jump),
+		keyboard.keyup(KEY.Space, () => {}),
 		// ANIMATE
 		animate,
 	),
