@@ -1,4 +1,55 @@
-import { entity, Output, all, collision, movement } from "../lib/index";
+import { entity, Output, all, collision, movement, audio, animation, image, id, random } from "../lib/index";
+
+const animate = animation({
+	name: "ninja",
+	columns: 7,
+	rows: 12,
+	animations: {
+		stand: {
+			fps: .3,
+			frames: Array.from({ length: 4 }).map((_, i) => ({
+				column: 0,
+				row: i,
+			})),
+		},
+		walk: {
+			fps: .3,
+			frames: Array.from({ length: 4 }).map((_, i) => ({
+				column: 1,
+				row: i,
+			})),
+		},
+		jump: {
+			fps: .3,
+			frames: [{
+				column: 2,
+				row: 0,
+			}],
+		},
+	},
+});
+
+const background = audio.play({
+	name: "background",
+	loop: true,
+	id,
+});
+
+const playWalk = audio.play({
+	name: "walk",
+	loop: true,
+	id,
+});
+
+const stopWalk = audio.stop({
+	name: "walk",
+	id,
+});
+
+const jump = audio.play({
+	name: "jump",
+	id: random,
+});
 
 export const platformer = (output : Output) => ({
 	layers: [{
@@ -11,10 +62,13 @@ export const platformer = (output : Output) => ({
 					x: .5,
 					y: .5,
 				},
-				width: 10,
-				height: 10,
-				fill: "white",
+				width: 50,
+				height: 50,
+				fill: "black",
+				draw : image,
 				update: all(
+					animate.stand,
+					animate,
 					movement.horizontal(100),
 					movement.jump(250),
 					movement.slide(10),
@@ -39,7 +93,7 @@ export const platformer = (output : Output) => ({
 				y: output.getHeight() - 100,
 				width: output.getWidth() - 200,
 				height: 100,
-				fill: "white",
+				fill: "black",
 				anchor: {
 					y: 1,
 				},
@@ -50,7 +104,7 @@ export const platformer = (output : Output) => ({
 				y: 100,
 				width: output.getWidth() - 200,
 				height: 100,
-				fill: "white",
+				fill: "black",
 			}),
 			entity({
 				name: "platform",
@@ -58,7 +112,7 @@ export const platformer = (output : Output) => ({
 				y: 100,
 				width: 100,
 				height: output.getHeight() - 200,
-				fill: "white",
+				fill: "black",
 			}),
 		],
 	}],

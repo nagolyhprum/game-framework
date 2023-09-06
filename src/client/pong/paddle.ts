@@ -18,7 +18,7 @@ const PADDLE = (output : Output) => ({
 	},
 	width: 10,
 	height: output.getHeight() / 4,
-	fill: "white",
+	fill: "black",
 	name: "paddle",        
 	velocity: {
 		y: 0,

@@ -4,7 +4,7 @@ const WALL = (output : Output) => ({
 	x: 0,
 	width: output.getWidth(),
 	height: 10,
-	fill: "white",
+	fill: "black",
 	name: "wall",
 });
 

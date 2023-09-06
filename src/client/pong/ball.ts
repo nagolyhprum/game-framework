@@ -15,7 +15,7 @@ export const ball = (output : Output) => entity({
 	},
 	width: 10,
 	height: 10,
-	fill: "white",
+	fill: "black",
 	name: "ball",
 	update: all(
 		movement.update,

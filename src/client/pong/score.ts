@@ -3,7 +3,7 @@ import { State } from "../state";
 
 const SCORE = {
 	name: "score",
-	fill: "white",
+	fill: "black",
 	y: 10,
 	draw: text,
 };

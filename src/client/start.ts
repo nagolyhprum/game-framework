@@ -12,9 +12,9 @@ import Background from "./audio/background.mp3";
 export const start = game(output => {       
 	return {
 		state,
-		debug: false,
+		debug: true,
 		background: "white",
-		scene: "animation",
+		scene: "platformer",
 		images: {
 			ninja: Ninja,
 		},
